@@ -1,0 +1,351 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7731FF2E14E19AB00034F378 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7731FF2D14E19AB00034F378 /* UIKit.framework */; };
+		7731FF3014E19AB00034F378 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7731FF2F14E19AB00034F378 /* Foundation.framework */; };
+		7731FF3214E19AB00034F378 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7731FF3114E19AB00034F378 /* CoreGraphics.framework */; };
+		7731FF3814E19AB00034F378 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 7731FF3614E19AB00034F378 /* InfoPlist.strings */; };
+		7731FF3A14E19AB00034F378 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 7731FF3914E19AB00034F378 /* main.m */; };
+		7731FF3E14E19AB00034F378 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7731FF3D14E19AB00034F378 /* AppDelegate.m */; };
+		7731FF4114E19AB00034F378 /* MainStoryboard_iPhone.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7731FF3F14E19AB00034F378 /* MainStoryboard_iPhone.storyboard */; };
+		7731FF4414E19AB00034F378 /* MainStoryboard_iPad.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7731FF4214E19AB00034F378 /* MainStoryboard_iPad.storyboard */; };
+		7731FF4714E19AB00034F378 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7731FF4614E19AB00034F378 /* ViewController.m */; };
+		7731FF5114E19AE50034F378 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7731FF4D14E19AE50034F378 /* AVFoundation.framework */; };
+		7731FF5214E19AE50034F378 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7731FF4E14E19AE50034F378 /* CoreImage.framework */; };
+		7731FF5314E19AE50034F378 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7731FF4F14E19AE50034F378 /* CoreMedia.framework */; };
+		7731FF5414E19AE50034F378 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7731FF5014E19AE50034F378 /* CoreVideo.framework */; };
+		7731FF6414E1C4560034F378 /* poker-face.png in Resources */ = {isa = PBXBuildFile; fileRef = 7731FF6114E1C4550034F378 /* poker-face.png */; };
+		7731FF6514E1C4560034F378 /* real_cf.png in Resources */ = {isa = PBXBuildFile; fileRef = 7731FF6214E1C4560034F378 /* real_cf.png */; };
+		7731FF6614E1C4560034F378 /* troll.png in Resources */ = {isa = PBXBuildFile; fileRef = 7731FF6314E1C4560034F378 /* troll.png */; };
+		7731FF6C14E1C58D0034F378 /* Memeface.m in Sources */ = {isa = PBXBuildFile; fileRef = 7731FF6914E1C58D0034F378 /* Memeface.m */; };
+		7731FF6D14E1C58D0034F378 /* MemeScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7731FF6B14E1C58D0034F378 /* MemeScrollView.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		7731FF2914E19AB00034F378 /* Troller.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Troller.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		7731FF2D14E19AB00034F378 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		7731FF2F14E19AB00034F378 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		7731FF3114E19AB00034F378 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		7731FF3514E19AB00034F378 /* Troller-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Troller-Info.plist"; sourceTree = "<group>"; };
+		7731FF3714E19AB00034F378 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		7731FF3914E19AB00034F378 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		7731FF3B14E19AB00034F378 /* Troller-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Troller-Prefix.pch"; sourceTree = "<group>"; };
+		7731FF3C14E19AB00034F378 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		7731FF3D14E19AB00034F378 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		7731FF4014E19AB00034F378 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPhone.storyboard; sourceTree = "<group>"; };
+		7731FF4314E19AB00034F378 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard_iPad.storyboard; sourceTree = "<group>"; };
+		7731FF4514E19AB00034F378 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		7731FF4614E19AB00034F378 /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
+		7731FF4D14E19AE50034F378 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		7731FF4E14E19AE50034F378 /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		7731FF4F14E19AE50034F378 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		7731FF5014E19AE50034F378 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		7731FF6114E1C4550034F378 /* poker-face.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "poker-face.png"; sourceTree = "<group>"; };
+		7731FF6214E1C4560034F378 /* real_cf.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = real_cf.png; sourceTree = "<group>"; };
+		7731FF6314E1C4560034F378 /* troll.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = troll.png; sourceTree = "<group>"; };
+		7731FF6814E1C58D0034F378 /* Memeface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Memeface.h; sourceTree = "<group>"; };
+		7731FF6914E1C58D0034F378 /* Memeface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Memeface.m; sourceTree = "<group>"; };
+		7731FF6A14E1C58D0034F378 /* MemeScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemeScrollView.h; sourceTree = "<group>"; };
+		7731FF6B14E1C58D0034F378 /* MemeScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemeScrollView.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7731FF2614E19AB00034F378 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7731FF5114E19AE50034F378 /* AVFoundation.framework in Frameworks */,
+				7731FF5214E19AE50034F378 /* CoreImage.framework in Frameworks */,
+				7731FF5314E19AE50034F378 /* CoreMedia.framework in Frameworks */,
+				7731FF5414E19AE50034F378 /* CoreVideo.framework in Frameworks */,
+				7731FF2E14E19AB00034F378 /* UIKit.framework in Frameworks */,
+				7731FF3014E19AB00034F378 /* Foundation.framework in Frameworks */,
+				7731FF3214E19AB00034F378 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7731FF1E14E19AB00034F378 = {
+			isa = PBXGroup;
+			children = (
+				7731FF4D14E19AE50034F378 /* AVFoundation.framework */,
+				7731FF4E14E19AE50034F378 /* CoreImage.framework */,
+				7731FF4F14E19AE50034F378 /* CoreMedia.framework */,
+				7731FF5014E19AE50034F378 /* CoreVideo.framework */,
+				7731FF3314E19AB00034F378 /* Troller */,
+				7731FF2C14E19AB00034F378 /* Frameworks */,
+				7731FF2A14E19AB00034F378 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7731FF2A14E19AB00034F378 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7731FF2914E19AB00034F378 /* Troller.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7731FF2C14E19AB00034F378 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				7731FF2D14E19AB00034F378 /* UIKit.framework */,
+				7731FF2F14E19AB00034F378 /* Foundation.framework */,
+				7731FF3114E19AB00034F378 /* CoreGraphics.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		7731FF3314E19AB00034F378 /* Troller */ = {
+			isa = PBXGroup;
+			children = (
+				7731FF6E14E1C6C70034F378 /* Art */,
+				7731FF6714E1C56F0034F378 /* MemeScrollView */,
+				7731FF3C14E19AB00034F378 /* AppDelegate.h */,
+				7731FF3D14E19AB00034F378 /* AppDelegate.m */,
+				7731FF3F14E19AB00034F378 /* MainStoryboard_iPhone.storyboard */,
+				7731FF4214E19AB00034F378 /* MainStoryboard_iPad.storyboard */,
+				7731FF4514E19AB00034F378 /* ViewController.h */,
+				7731FF4614E19AB00034F378 /* ViewController.m */,
+				7731FF3414E19AB00034F378 /* Supporting Files */,
+			);
+			path = Troller;
+			sourceTree = "<group>";
+		};
+		7731FF3414E19AB00034F378 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				7731FF3514E19AB00034F378 /* Troller-Info.plist */,
+				7731FF3614E19AB00034F378 /* InfoPlist.strings */,
+				7731FF3914E19AB00034F378 /* main.m */,
+				7731FF3B14E19AB00034F378 /* Troller-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		7731FF6714E1C56F0034F378 /* MemeScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				7731FF6814E1C58D0034F378 /* Memeface.h */,
+				7731FF6914E1C58D0034F378 /* Memeface.m */,
+				7731FF6A14E1C58D0034F378 /* MemeScrollView.h */,
+				7731FF6B14E1C58D0034F378 /* MemeScrollView.m */,
+			);
+			name = MemeScrollView;
+			sourceTree = "<group>";
+		};
+		7731FF6E14E1C6C70034F378 /* Art */ = {
+			isa = PBXGroup;
+			children = (
+				7731FF6114E1C4550034F378 /* poker-face.png */,
+				7731FF6214E1C4560034F378 /* real_cf.png */,
+				7731FF6314E1C4560034F378 /* troll.png */,
+			);
+			name = Art;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7731FF2814E19AB00034F378 /* Troller */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7731FF4A14E19AB00034F378 /* Build configuration list for PBXNativeTarget "Troller" */;
+			buildPhases = (
+				7731FF2514E19AB00034F378 /* Sources */,
+				7731FF2614E19AB00034F378 /* Frameworks */,
+				7731FF2714E19AB00034F378 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Troller;
+			productName = Troller;
+			productReference = 7731FF2914E19AB00034F378 /* Troller.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7731FF2014E19AB00034F378 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 7731FF2314E19AB00034F378 /* Build configuration list for PBXProject "Troller" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 7731FF1E14E19AB00034F378;
+			productRefGroup = 7731FF2A14E19AB00034F378 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7731FF2814E19AB00034F378 /* Troller */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7731FF2714E19AB00034F378 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7731FF3814E19AB00034F378 /* InfoPlist.strings in Resources */,
+				7731FF4114E19AB00034F378 /* MainStoryboard_iPhone.storyboard in Resources */,
+				7731FF4414E19AB00034F378 /* MainStoryboard_iPad.storyboard in Resources */,
+				7731FF6414E1C4560034F378 /* poker-face.png in Resources */,
+				7731FF6514E1C4560034F378 /* real_cf.png in Resources */,
+				7731FF6614E1C4560034F378 /* troll.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7731FF2514E19AB00034F378 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7731FF3A14E19AB00034F378 /* main.m in Sources */,
+				7731FF3E14E19AB00034F378 /* AppDelegate.m in Sources */,
+				7731FF4714E19AB00034F378 /* ViewController.m in Sources */,
+				7731FF6C14E1C58D0034F378 /* Memeface.m in Sources */,
+				7731FF6D14E1C58D0034F378 /* MemeScrollView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		7731FF3614E19AB00034F378 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7731FF3714E19AB00034F378 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		7731FF3F14E19AB00034F378 /* MainStoryboard_iPhone.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7731FF4014E19AB00034F378 /* en */,
+			);
+			name = MainStoryboard_iPhone.storyboard;
+			sourceTree = "<group>";
+		};
+		7731FF4214E19AB00034F378 /* MainStoryboard_iPad.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				7731FF4314E19AB00034F378 /* en */,
+			);
+			name = MainStoryboard_iPad.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		7731FF4814E19AB00034F378 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7731FF4914E19AB00034F378 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7731FF4B14E19AB00034F378 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Troller/Troller-Prefix.pch";
+				INFOPLIST_FILE = "Troller/Troller-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		7731FF4C14E19AB00034F378 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Troller/Troller-Prefix.pch";
+				INFOPLIST_FILE = "Troller/Troller-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7731FF2314E19AB00034F378 /* Build configuration list for PBXProject "Troller" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7731FF4814E19AB00034F378 /* Debug */,
+				7731FF4914E19AB00034F378 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7731FF4A14E19AB00034F378 /* Build configuration list for PBXNativeTarget "Troller" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7731FF4B14E19AB00034F378 /* Debug */,
+				7731FF4C14E19AB00034F378 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7731FF2014E19AB00034F378 /* Project object */;
+}
