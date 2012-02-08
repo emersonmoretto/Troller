@@ -21,13 +21,13 @@
     dispatch_queue_t videoDataOutputQueue;
     BOOL isUsingFrontFacingCamera;
     IBOutlet UIActivityIndicatorView *activityIndicator;
-    IBOutlet UIView *glassView;
+    //IBOutlet UIView *glassView;
     IBOutlet UIButton *botao;    
     
     NSMutableArray *faces;
-    IBOutlet UIImageView *selectedFace;
+    UIImage *selectedFace;
 	IBOutlet MemeScrollView *memeScrollView;
-    
+    UIDeviceOrientation oldOrientation;
 }
 
 - (IBAction)takePicture:(id)sender;

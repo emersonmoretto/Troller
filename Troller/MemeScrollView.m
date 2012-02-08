@@ -17,7 +17,7 @@
 
 - (void)addMeme:(UIImage *)memeImage withTag:(int)memeTag
 {
-	Memeface *imageView = [[Memeface alloc] initWithFrame:CGRectMake(xOffset, 5, 154, 205)];
+	Memeface *imageView = [[Memeface alloc] initWithFrame:CGRectMake(xOffset, 5, 154, 180)];
 	imageView.userInteractionEnabled = YES;
 	imageView.image			= memeImage;
 	imageView.tag				= memeTag;
@@ -26,7 +26,7 @@
   [self addSubview:imageView];
 
 	xOffset += MEME_SCROLLVIEW_STEP;
-	[self setContentSize:CGSizeMake(xOffset - MEME_SCROLLVIEW_XOFF, 235)];
+	[self setContentSize:CGSizeMake(xOffset - MEME_SCROLLVIEW_XOFF, 185)];
   numberOfMemes ++;
 	
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.0" toolsVersion="1938" systemVersion="10J869" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.0" toolsVersion="1938" systemVersion="10K549" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="2">
     <dependencies>
         <development defaultVersion="4200" identifier="xcode"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="933"/>
@@ -37,47 +37,20 @@
                                 </items>
                             </toolbar>
                             <view contentMode="scaleToFill" id="2X2-WA-tEY">
-                                <rect key="frame" x="0.0" y="0.0" width="768" height="764"/>
+                                <rect key="frame" x="0.0" y="0.0" width="768" height="772"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
-                            <view contentMode="scaleToFill" id="clq-7P-Uaq">
-                                <rect key="frame" x="0.0" y="0.0" width="713" height="745"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="contactAdd" lineBreakMode="middleTruncation" id="wae-oR-qv3">
-                                        <rect key="frame" x="167" y="446" width="29" height="29"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
-                                        <state key="normal">
-                                            <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
-                                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                        <state key="highlighted">
-                                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                        </state>
-                                    </button>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="wM5-bt-5k1">
-                                        <rect key="frame" x="275" y="309" width="175" height="213"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                    </imageView>
-                                </subviews>
-                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                            </view>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsVerticalScrollIndicator="NO" id="S4Y-SH-IZP" customClass="MemeScrollView">
-                                <rect key="frame" x="0.0" y="724" width="768" height="236"/>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="S4Y-SH-IZP" customClass="MemeScrollView">
+                                <rect key="frame" x="0.0" y="775" width="768" height="185"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </scrollView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
-                        <outlet property="botao" destination="wae-oR-qv3" id="JXg-ix-v3s"/>
-                        <outlet property="glassView" destination="clq-7P-Uaq" id="s5O-KX-GNA"/>
                         <outlet property="memeScrollView" destination="S4Y-SH-IZP" id="JD6-lP-xva"/>
-                        <outlet property="previewView" destination="2X2-WA-tEY" id="W89-BO-bTp"/>
-                        <outlet property="selectedFace" destination="wM5-bt-5k1" id="jxS-dC-aIg"/>
+                        <outlet property="previewView" destination="2X2-WA-tEY" id="dFF-KO-Lii"/>
                     </connections>
                 </viewController>
             </objects>
@@ -94,10 +67,8 @@
                 <relationship kind="action" name="takePicture:"/>
                 <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
                 <relationship kind="outlet" name="botao" candidateClass="UIButton"/>
-                <relationship kind="outlet" name="glassView" candidateClass="UIView"/>
                 <relationship kind="outlet" name="memeScrollView" candidateClass="MemeScrollView"/>
                 <relationship kind="outlet" name="previewView" candidateClass="UIView"/>
-                <relationship kind="outlet" name="selectedFace" candidateClass="UIImageView"/>
             </relationships>
         </class>
     </classes>

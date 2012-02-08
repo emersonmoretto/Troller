@@ -34,14 +34,34 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 {
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.2];
-	[selectedFace setAlpha:0.0];
+//	[selectedFace setAlpha:0.0];
 	[UIView commitAnimations];
+
+    CABasicAnimation *theAnimation;
     
-	selectedFace.image = [faces objectAtIndex:tagidx];
-	
+    theAnimation=[CABasicAnimation animationWithKeyPath:@"opacity"];
+    theAnimation.duration=0.8;
+    theAnimation.repeatCount=1;
+    theAnimation.autoreverses=NO;
+    theAnimation.fromValue=[NSNumber numberWithFloat:0.0];
+    theAnimation.toValue=[NSNumber numberWithFloat:1.0];
+
+    
+	selectedFace = [faces objectAtIndex:tagidx];//[UIImage imageNamed:@"notbad.png"];//
+
+	// procurando a layer do meme e trocando o conteudo dela
+    NSArray *sublayers = [NSArray arrayWithArray:[previewLayer sublayers]];
+    for ( CALayer *layer in sublayers ) {
+		if ( [[layer name] isEqualToString:@"FaceLayer"] ){
+            [layer setContents:(id)[selectedFace CGImage]];    
+            [layer addAnimation:theAnimation forKey:@"animateOpacity"];
+        }
+    }
+       
+        
 	[UIView beginAnimations:nil context:NULL];
 	[UIView setAnimationDuration:0.6];
-	[selectedFace setAlpha:1.0];
+	//[selectedFace setAlpha:1.0];
 	[UIView commitAnimations];	
 }
 
@@ -56,7 +76,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 	faces = [[NSMutableArray alloc] init];
 	[faces addObject:[UIImage imageNamed:@"troll.png"]];
 	[faces addObject:[UIImage imageNamed:@"poker-face.png"]];
-	[faces addObject:[UIImage imageNamed:@"troll.png"]];
+	[faces addObject:[UIImage imageNamed:@"notbad.png"]];
 	[faces addObject:[UIImage imageNamed:@"poker-face.png"]];
 	[faces addObject:[UIImage imageNamed:@"troll.png"]];
 	[faces addObject:[UIImage imageNamed:@"poker-face.png"]];
@@ -170,6 +190,160 @@ bail:
 	isUsingFrontFacingCamera = !isUsingFrontFacingCamera;
 }
 
+- (double)degreesToRadians:(int)degrees
+{
+    NSNumber * number = [NSNumber numberWithInt:degrees];
+    double radians = ([number doubleValue] * M_PI) / 180.0;
+    return radians;
+}
+
+// find where the video box is positioned within the preview layer based on the video size and gravity
++ (CGRect)videoPreviewBoxForGravity:(NSString *)gravity frameSize:(CGSize)frameSize apertureSize:(CGSize)apertureSize
+{
+    CGFloat apertureRatio = apertureSize.height / apertureSize.width;
+    CGFloat viewRatio = frameSize.width / frameSize.height;
+    
+    CGSize size = CGSizeZero;
+    if ([gravity isEqualToString:AVLayerVideoGravityResizeAspectFill]) {
+        if (viewRatio > apertureRatio) {
+            size.width = frameSize.width;
+            size.height = apertureSize.width * (frameSize.width / apertureSize.height);
+        } else {
+            size.width = apertureSize.height * (frameSize.height / apertureSize.width);
+            size.height = frameSize.height;
+        }
+    } else if ([gravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
+        if (viewRatio > apertureRatio) {
+            size.width = apertureSize.height * (frameSize.height / apertureSize.width);
+            size.height = frameSize.height;
+        } else {
+            size.width = frameSize.width;
+            size.height = apertureSize.width * (frameSize.width / apertureSize.height);
+        }
+    } else if ([gravity isEqualToString:AVLayerVideoGravityResize]) {
+        size.width = frameSize.width;
+        size.height = frameSize.height;
+    }
+	
+	CGRect videoBox;
+	videoBox.size = size;
+	if (size.width < frameSize.width)
+		videoBox.origin.x = (frameSize.width - size.width) / 2;
+	else
+		videoBox.origin.x = (size.width - frameSize.width) / 2;
+	
+	if ( size.height < frameSize.height )
+		videoBox.origin.y = (frameSize.height - size.height) / 2;
+	else
+		videoBox.origin.y = (size.height - frameSize.height) / 2;
+    
+	return videoBox;
+}
+
+- (void)drawMemes:(NSArray *)features forVideoBox:(CGRect)clap orientation:(UIDeviceOrientation)orientation
+{
+	NSArray *sublayers = [NSArray arrayWithArray:[previewLayer sublayers]];
+	NSInteger sublayersCount = [sublayers count], currentSublayer = 0;
+	NSInteger featuresCount = [features count], currentFeature = 0;
+	
+	[CATransaction begin];
+	[CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+	
+	// hide all the face layers
+	for ( CALayer *layer in sublayers ) {
+		if ( [[layer name] isEqualToString:@"FaceLayer"] )
+			[layer setHidden:YES];
+	}	
+    
+  	
+	if ( featuresCount == 0) {
+		[CATransaction commit];
+		return; // early bail.
+	}
+    
+	CGSize parentFrameSize = [previewView frame].size;
+	NSString *gravity = [previewLayer videoGravity];
+	BOOL isMirrored = [previewLayer isMirrored];
+	CGRect previewBox = [ViewController videoPreviewBoxForGravity:gravity 
+                                                                 frameSize:parentFrameSize 
+                                                              apertureSize:clap.size];
+	
+	for ( CIFaceFeature *ff in features ) {
+		// find the correct position for the square layer within the previewLayer
+		// the feature box originates in the bottom left of the video frame.
+		// (Bottom right if mirroring is turned on)
+		CGRect faceRect = [ff bounds];
+        
+		// flip preview width and height
+		CGFloat temp = faceRect.size.width;
+		faceRect.size.width = faceRect.size.height;
+		faceRect.size.height = temp;
+		temp = faceRect.origin.x;
+		faceRect.origin.x = faceRect.origin.y;
+		faceRect.origin.y = temp;
+		
+        // scale coordinates so they fit in the preview box, which may be scaled
+		CGFloat widthScaleBy = previewBox.size.width / clap.size.height;
+		CGFloat heightScaleBy = previewBox.size.height / clap.size.width;
+		
+        faceRect.size.width *= widthScaleBy;
+		faceRect.size.height *= heightScaleBy;
+		faceRect.origin.x *= widthScaleBy;
+		faceRect.origin.y *= heightScaleBy;
+        
+		if ( isMirrored )
+			faceRect = CGRectOffset(faceRect, previewBox.origin.x + previewBox.size.width - faceRect.size.width - (faceRect.origin.x * 2), previewBox.origin.y);
+		else
+			faceRect = CGRectOffset(faceRect, previewBox.origin.x, previewBox.origin.y);
+		
+		CALayer *featureLayer = nil;
+		
+		// re-use an existing layer if possible
+		while ( !featureLayer && (currentSublayer < sublayersCount) ) {
+			CALayer *currentLayer = [sublayers objectAtIndex:currentSublayer++];
+			if ( [[currentLayer name] isEqualToString:@"FaceLayer"] ) {
+				featureLayer = currentLayer;
+				[currentLayer setHidden:NO];
+			}
+		}
+		
+		// create a new one if necessary
+		if ( !featureLayer ) {
+			featureLayer = [CALayer new];
+
+			[featureLayer setContents:(id)[selectedFace CGImage]];
+			[featureLayer setName:@"FaceLayer"];
+           [previewLayer addSublayer:featureLayer];
+            NSLog(@"layer criada");
+			
+		}
+		[featureLayer setFrame:faceRect];
+		
+        
+		switch (orientation) {
+			case UIDeviceOrientationPortrait:
+				[featureLayer setAffineTransform:CGAffineTransformMakeRotation([self degreesToRadians:0])];
+				break;
+			case UIDeviceOrientationPortraitUpsideDown:
+				[featureLayer setAffineTransform:CGAffineTransformMakeRotation([self degreesToRadians:180])];
+				break;
+			case UIDeviceOrientationLandscapeLeft:
+				[featureLayer setAffineTransform:CGAffineTransformMakeRotation([self degreesToRadians:90])];
+				break;
+			case UIDeviceOrientationLandscapeRight:
+				[featureLayer setAffineTransform:CGAffineTransformMakeRotation([self degreesToRadians:-90])];
+				break;
+			case UIDeviceOrientationFaceUp:
+			case UIDeviceOrientationFaceDown:
+			default:
+				break; // leave the layer in its last known orientation
+		}
+		currentFeature++;
+	}
+	
+	[CATransaction commit];
+}
+
 - (void)captureOutput:(AVCaptureOutput *)captureOutput didOutputSampleBuffer:(CMSampleBufferRef)sampleBuffer fromConnection:(AVCaptureConnection *)connection
 {	
     
@@ -231,23 +405,17 @@ bail:
 	NSArray *features = [faceDetector featuresInImage:ciImage options:imageOptions];
 	//[ciImage release];
 	
-    if (features.count > 0) {
+    // get the clean aperture
+    // the clean aperture is a rectangle that defines the portion of the encoded pixel dimensions
+    // that represents image data valid for display.
+	CMFormatDescriptionRef fdesc = CMSampleBufferGetFormatDescription(sampleBuffer);
+	CGRect clap = CMVideoFormatDescriptionGetCleanAperture(fdesc, false /*originIsTopLeft == false*/);
     
-        CIFaceFeature * ff = [features objectAtIndex:0];
-   
-        NSLog(@"owowow %f",[ff leftEyePosition].x); 
-
-        //[[activityIndicator layer] setFrame:CGRectMake(ff.bounds.origin.x, ff.bounds.origin.y,ff.bounds.origin.x+ff.bounds.size.width,ff.bounds.origin.y+ff.bounds.size.height)];
-       //[activityIndicator setFrame:CGRectMake(ff.bounds.origin.x, ff.bounds.origin.y,ff.bounds.origin.x+ff.bounds.size.width,ff.bounds.origin.y+ff.bounds.size.height)];
-      
-       // CGAffineTransform tr = CGAffineTransformMakeTranslation([ff leftEyePosition].x, [ff leftEyePosition].y);
-        
-        [self performSelectorOnMainThread:@selector(moveModerFocker:) withObject:ff waitUntilDone:YES];
-        //activityIndicator frame 
-        //activityIndicator.frame.origin.x = [ff leftEyePosition].x;
-        //activityIndicator.frame.origin.y = [ff leftEyePosition].y;
-    }    
+    dispatch_async(dispatch_get_main_queue(), ^(void) {
+		[self drawMemes:features forVideoBox:clap orientation:curDeviceOrientation];
+	});       
 }
+
 
 - (void)moveModerFocker:(CIFaceFeature*)ff
 {
@@ -261,6 +429,8 @@ bail:
     // get the width of the face
     CGFloat faceWidth = ff.bounds.size.width;
 
+    		//768x772
+    /*
     
     for (UIView *view in glassView.subviews) {
         [view removeFromSuperview];
@@ -310,7 +480,7 @@ bail:
     
     [selectedFace setFrame:CGRectMake(ff.mouthPosition.x-faceWidth*0.2, ff.mouthPosition.y-faceWidth*0.2, faceWidth*2.2, faceWidth*2.2)];
     [glassView addSubview:selectedFace];
-
+     */   
    
     
 }
@@ -318,7 +488,7 @@ bail:
 - (void)viewDidUnload
 {
     activityIndicator = nil;
-    glassView = nil;
+    //glassView = nil;
     botao = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
@@ -340,7 +510,10 @@ bail:
 	// Do any additional setup after loading the view, typically from a nib.
     [self setupMemeScrollView];
   	[self setupAVCapture];
-	//square = [[UIImage imageNamed:@"squarePNG"] retain];
+    
+    [[UIDevice  currentDevice] beginGeneratingDeviceOrientationNotifications];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(detectOrientation:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
+    oldOrientation = [[UIDevice currentDevice] orientation];
 	NSDictionary *detectorOptions = [[NSDictionary alloc] initWithObjectsAndKeys:CIDetectorAccuracyLow, CIDetectorAccuracy, nil];
 	faceDetector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:detectorOptions];
 	//[detectorOptions release];
@@ -366,14 +539,32 @@ bail:
 	[super viewDidDisappear:animated];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
-{
-    // Return YES for supported orientations
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-        return (interfaceOrientation != UIInterfaceOrientationPortraitUpsideDown);
-    } else {
-        return YES;
+-(void)detectOrientation: (NSNotification *)notification{
+
+    CGFloat transform = 0.0;
+    if([[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortrait) {
+        transform = 0.0;
     }
+    if([[UIDevice currentDevice] orientation] == UIInterfaceOrientationPortraitUpsideDown) {
+        transform = -M_PI;
+    }
+    if([[UIDevice currentDevice] orientation] == UIInterfaceOrientationLandscapeLeft) {
+        transform = -M_PI/2;
+    }
+    if([[UIDevice currentDevice] orientation] == UIInterfaceOrientationLandscapeRight) {
+        transform = M_PI/2;
+    }
+    [UIView beginAnimations:nil context:NULL];
+    [UIView setAnimationDuration:0.3];
+    for ( UIView *view in [memeScrollView subviews]) {
+        [view setTransform:CGAffineTransformMakeRotation(transform)];
+    }
+    [UIView commitAnimations];
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{        
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
 }
 
 @end
