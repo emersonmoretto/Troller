@@ -25,6 +25,8 @@
 		7731FF6614E1C4560034F378 /* troll.png in Resources */ = {isa = PBXBuildFile; fileRef = 7731FF6314E1C4560034F378 /* troll.png */; };
 		7731FF6C14E1C58D0034F378 /* Memeface.m in Sources */ = {isa = PBXBuildFile; fileRef = 7731FF6914E1C58D0034F378 /* Memeface.m */; };
 		7731FF6D14E1C58D0034F378 /* MemeScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7731FF6B14E1C58D0034F378 /* MemeScrollView.m */; };
+		E7E1F47714E1F6F700F0FB3D /* notbad.png in Resources */ = {isa = PBXBuildFile; fileRef = E7E1F47614E1F6F700F0FB3D /* notbad.png */; };
+		E7E1F47E14E1FCB000F0FB3D /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7E1F47D14E1FCB000F0FB3D /* QuartzCore.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -53,6 +55,8 @@
 		7731FF6914E1C58D0034F378 /* Memeface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Memeface.m; sourceTree = "<group>"; };
 		7731FF6A14E1C58D0034F378 /* MemeScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemeScrollView.h; sourceTree = "<group>"; };
 		7731FF6B14E1C58D0034F378 /* MemeScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemeScrollView.m; sourceTree = "<group>"; };
+		E7E1F47614E1F6F700F0FB3D /* notbad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notbad.png; sourceTree = "<group>"; };
+		E7E1F47D14E1FCB000F0FB3D /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E7E1F47E14E1FCB000F0FB3D /* QuartzCore.framework in Frameworks */,
 				7731FF5114E19AE50034F378 /* AVFoundation.framework in Frameworks */,
 				7731FF5214E19AE50034F378 /* CoreImage.framework in Frameworks */,
 				7731FF5314E19AE50034F378 /* CoreMedia.framework in Frameworks */,
@@ -76,6 +81,7 @@
 		7731FF1E14E19AB00034F378 = {
 			isa = PBXGroup;
 			children = (
+				E7E1F47D14E1FCB000F0FB3D /* QuartzCore.framework */,
 				7731FF4D14E19AE50034F378 /* AVFoundation.framework */,
 				7731FF4E14E19AE50034F378 /* CoreImage.framework */,
 				7731FF4F14E19AE50034F378 /* CoreMedia.framework */,
@@ -145,6 +151,7 @@
 		7731FF6E14E1C6C70034F378 /* Art */ = {
 			isa = PBXGroup;
 			children = (
+				E7E1F47614E1F6F700F0FB3D /* notbad.png */,
 				7731FF6114E1C4550034F378 /* poker-face.png */,
 				7731FF6214E1C4560034F378 /* real_cf.png */,
 				7731FF6314E1C4560034F378 /* troll.png */,
@@ -208,6 +215,7 @@
 				7731FF6414E1C4560034F378 /* poker-face.png in Resources */,
 				7731FF6514E1C4560034F378 /* real_cf.png in Resources */,
 				7731FF6614E1C4560034F378 /* troll.png in Resources */,
+				E7E1F47714E1F6F700F0FB3D /* notbad.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -344,6 +352,7 @@
 				7731FF4C14E19AB00034F378 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
