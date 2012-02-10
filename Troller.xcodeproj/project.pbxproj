@@ -43,6 +43,7 @@
 		77AAC0E014E5B767001728DF /* neildegrasse.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0DC14E5B767001728DF /* neildegrasse.png */; };
 		77AAC0E114E5B767001728DF /* okay.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0DD14E5B767001728DF /* okay.png */; };
 		77AAC0E214E5B767001728DF /* seriously.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0DE14E5B767001728DF /* seriously.png */; };
+		77AAC0E414E5BFC2001728DF /* nerd.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0E314E5BFC1001728DF /* nerd.png */; };
 		E7A5DE5014E4A60100F0E47D /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A5DE4F14E4A60100F0E47D /* AssetsLibrary.framework */; };
 		E7A5DE5314E4A61A00F0E47D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A5DE5214E4A61A00F0E47D /* ImageIO.framework */; };
 		E7E1F47714E1F6F700F0FB3D /* notbad.png in Resources */ = {isa = PBXBuildFile; fileRef = E7E1F47614E1F6F700F0FB3D /* notbad.png */; };
@@ -94,6 +95,7 @@
 		77AAC0DC14E5B767001728DF /* neildegrasse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = neildegrasse.png; path = Art/neildegrasse.png; sourceTree = "<group>"; };
 		77AAC0DD14E5B767001728DF /* okay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = okay.png; path = Art/okay.png; sourceTree = "<group>"; };
 		77AAC0DE14E5B767001728DF /* seriously.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = seriously.png; path = Art/seriously.png; sourceTree = "<group>"; };
+		77AAC0E314E5BFC1001728DF /* nerd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = nerd.png; path = Art/nerd.png; sourceTree = "<group>"; };
 		E7A5DE4F14E4A60100F0E47D /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		E7A5DE5214E4A61A00F0E47D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		E7E1F47614E1F6F700F0FB3D /* notbad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notbad.png; sourceTree = "<group>"; };
@@ -198,6 +200,7 @@
 		7731FF6E14E1C6C70034F378 /* Art */ = {
 			isa = PBXGroup;
 			children = (
+				77AAC0E314E5BFC1001728DF /* nerd.png */,
 				77AAC0DB14E5B767001728DF /* fuckyeah.png */,
 				77AAC0DC14E5B767001728DF /* neildegrasse.png */,
 				77AAC0DD14E5B767001728DF /* okay.png */,
@@ -297,6 +300,7 @@
 				77AAC0E014E5B767001728DF /* neildegrasse.png in Resources */,
 				77AAC0E114E5B767001728DF /* okay.png in Resources */,
 				77AAC0E214E5B767001728DF /* seriously.png in Resources */,
+				77AAC0E414E5BFC2001728DF /* nerd.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

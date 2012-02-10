@@ -106,6 +106,7 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
    	[faces addObject:[UIImage imageNamed:@"fuckyeah.png"]];
   	[faces addObject:[UIImage imageNamed:@"neildegrasse.png"]];
   	[faces addObject:[UIImage imageNamed:@"okay.png"]];    
+  	[faces addObject:[UIImage imageNamed:@"nerd.png"]];
   	[faces addObject:[UIImage imageNamed:@"seriously.png"]];        
    	[faces addObject:[UIImage imageNamed:@"motherofgod.png"]];
     
