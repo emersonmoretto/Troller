@@ -9,6 +9,8 @@
 #import "ViewController.h"
 #import <AVFoundation/AVFoundation.h>
 #import <AssertMacros.h>
+#import <ImageIO/ImageIO.h>
+#import <AssetsLibrary/AssetsLibrary.h>
 
 @implementation ViewController
 
@@ -134,9 +136,9 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     if ( [session canAddOutput:videoDataOutput] )
 		[session addOutput:videoDataOutput];
     
-	[[videoDataOutput connectionWithMediaType:AVMediaTypeVideo] setEnabled:NO];
+	[[videoDataOutput connectionWithMediaType:AVMediaTypeVideo] setEnabled:TRUE];
 	
-	//effectiveScale = 1.0;
+	effectiveScale = 1.0;
 	previewLayer = [[AVCaptureVideoPreviewLayer alloc] initWithSession:session];
 	[previewLayer setBackgroundColor:[[UIColor blackColor] CGColor]];
 	[previewLayer setVideoGravity:AVLayerVideoGravityResizeAspect];
@@ -162,6 +164,211 @@ bail:
 		//[alertView release];
 		[self teardownAVCapture];
 	}
+}
+
+// utility routine used after taking a still image to write the resulting image to the camera roll
+- (BOOL)writeCGImageToCameraRoll:(CGImageRef)cgImage withMetadata:(NSDictionary *)metadata
+{
+	CFMutableDataRef destinationData = CFDataCreateMutable(kCFAllocatorDefault, 0);
+	CGImageDestinationRef destination = CGImageDestinationCreateWithData(destinationData, 
+																		 CFSTR("public.jpeg"), 
+																		 1, 
+																		 NULL);
+	BOOL success = (destination != NULL);
+	//require(success, bail);
+    
+	const float JPEGCompQuality = 0.85f; // JPEGHigherQuality
+	CFMutableDictionaryRef optionsDict = NULL;
+	CFNumberRef qualityNum = NULL;
+	
+	qualityNum = CFNumberCreate(0, kCFNumberFloatType, &JPEGCompQuality);    
+	if ( qualityNum ) {
+		optionsDict = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
+		if ( optionsDict )
+			CFDictionarySetValue(optionsDict, kCGImageDestinationLossyCompressionQuality, qualityNum);
+		CFRelease( qualityNum );
+	}
+	
+	CGImageDestinationAddImage( destination, cgImage, optionsDict );
+	success = CGImageDestinationFinalize( destination );
+    
+	if ( optionsDict )
+		CFRelease(optionsDict);
+	
+	//require(success, bail);
+	
+	CFRetain(destinationData);
+	ALAssetsLibrary *library = [ALAssetsLibrary new];
+	[library writeImageDataToSavedPhotosAlbum:(__bridge id)destinationData metadata:metadata completionBlock:^(NSURL *assetURL, NSError *error) {
+		if (destinationData)
+			CFRelease(destinationData);
+	}];
+	//[library release];
+    
+    
+//bail:
+	if (destinationData)
+		CFRelease(destinationData);
+	if (destination)
+		CFRelease(destination);
+    
+	return success;
+}
+
+// utility routing used during image capture to set up capture orientation
+- (AVCaptureVideoOrientation)avOrientationForDeviceOrientation:(UIDeviceOrientation)deviceOrientation
+{
+	AVCaptureVideoOrientation result = deviceOrientation;
+	if ( deviceOrientation == UIDeviceOrientationLandscapeLeft )
+		result = AVCaptureVideoOrientationLandscapeRight;
+	else if ( deviceOrientation == UIDeviceOrientationLandscapeRight )
+		result = AVCaptureVideoOrientationLandscapeLeft;
+	return result;
+}
+/*
+- (CGImageRef)newSquareOverlayedImageForFeatures:(NSArray *)features 
+                                       inCGImage:(CGImageRef)backgroundImage 
+                                 withOrientation:(UIDeviceOrientation)orientation 
+                                     frontFacing:(BOOL)isFrontFacing
+{
+	CGImageRef returnImage = NULL;
+	CGRect backgroundImageRect = CGRectMake(0., 0., CGImageGetWidth(backgroundImage), CGImageGetHeight(backgroundImage));
+	CGContextRef bitmapContext = CreateCGBitmapContextForSize(backgroundImageRect.size);
+	CGContextClearRect(bitmapContext, backgroundImageRect);
+	CGContextDrawImage(bitmapContext, backgroundImageRect, backgroundImage);
+	CGFloat rotationDegrees = 0.;
+	
+	switch (orientation) {
+		case UIDeviceOrientationPortrait:
+			rotationDegrees = -90.;
+			break;
+		case UIDeviceOrientationPortraitUpsideDown:
+			rotationDegrees = 90.;
+			break;
+		case UIDeviceOrientationLandscapeLeft:
+			if (isFrontFacing) rotationDegrees = 180.;
+			else rotationDegrees = 0.;
+			break;
+		case UIDeviceOrientationLandscapeRight:
+			if (isFrontFacing) rotationDegrees = 0.;
+			else rotationDegrees = 180.;
+			break;
+		case UIDeviceOrientationFaceUp:
+		case UIDeviceOrientationFaceDown:
+		default:
+			break; // leave the layer in its last known orientation
+	}
+    
+	 // features found by the face detector
+	for ( CIFaceFeature *ff in features ) {
+		CGRect faceRect = [ff bounds];
+		CGContextDrawImage(bitmapContext, faceRect, [selectedFace CGImage]);
+	}
+	returnImage = CGBitmapContextCreateImage(bitmapContext);
+	CGContextRelease (bitmapContext);
+	
+	return returnImage;
+}
+ */
+
+- (IBAction)takePicture:(id)sender
+{
+	// Find out the current orientation and tell the still image output.
+	AVCaptureConnection *stillImageConnection = [stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
+	UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
+	AVCaptureVideoOrientation avcaptureOrientation = [self avOrientationForDeviceOrientation:curDeviceOrientation];
+	[stillImageConnection setVideoOrientation:avcaptureOrientation];
+	[stillImageConnection setVideoScaleAndCropFactor:effectiveScale];
+	
+    
+    // set the appropriate pixel format / image type output setting depending on if we'll need an uncompressed image for
+    // the possiblity of drawing the red square over top or if we're just writing a jpeg to the camera roll which is the trival case
+ //   if (doingFaceDetection)
+		[stillImageOutput setOutputSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCMPixelFormat_32BGRA] 
+																		forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
+	
+	[stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection
+                                                  completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
+                                                     
+                                                          
+                                                    // Got an image.
+                                                      CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(imageDataSampleBuffer);
+                                                      CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, imageDataSampleBuffer, kCMAttachmentMode_ShouldPropagate);
+                                                    
+                                                      CIImage *ciImage = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:(__bridge NSDictionary *)attachments];
+                                                      
+                                                      if (attachments)
+                                                          CFRelease(attachments);
+                                                      
+                                                      NSDictionary *imageOptions = nil;
+                                                      
+                                                      CFNumberRef orientationRef = CMGetAttachment(imageDataSampleBuffer, kCGImagePropertyOrientation, NULL);
+                                                      NSNumber *orientation = (__bridge NSNumber *) orientationRef;                                                    
+                                                      
+                                                      if (orientation) {
+                                                          imageOptions = [NSDictionary dictionaryWithObject:orientation forKey:CIDetectorImageOrientation];
+                                                      }
+                                                      
+                                                      // when processing an existing frame we want any new frames to be automatically dropped
+                                                      // queueing this block to execute on the videoDataOutputQueue serial queue ensures this
+                                                      // see the header doc for setSampleBufferDelegate:queue: for more information
+                                                      dispatch_sync(videoDataOutputQueue, ^(void) {
+                                                          
+                                                          // get the array of CIFeature instances in the given image with a orientation passed in
+                                                          // the detection will be done based on the orientation but the coordinates in the returned features will
+                                                          // still be based on those of the image.
+                                                          NSArray *features = [faceDetector featuresInImage:ciImage options:imageOptions];
+                                                         
+                                                          CGImageRef srcImage = NULL;
+                                                          
+                                                          /*OSStatus err = CreateCGImageFromCVPixelBuffer(CMSampleBufferGetImageBuffer(imageDataSampleBuffer), &srcImage);
+                                                          
+                                                          //check(!err);
+                                                          
+                                                          /*
+                                                          CGImageRef cgImageResult = [self newSquareOverlayedImageForFeatures:features 
+                                                                                                                    inCGImage:srcImage 
+                                                                                                              withOrientation:curDeviceOrientation 
+                                                                                                                  frontFacing:isUsingFrontFacingCamera];
+                                                           */
+                                                          
+                                                          
+                                                          /*Create a CGImageRef from the CVImageBufferRef*/
+                                                          //CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer); 
+                                                          /*Lock the image buffer*/
+                                                          CVPixelBufferLockBaseAddress(pixelBuffer,0); 
+                                                          
+                                                          uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer); 
+                                                          size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer); 
+                                                          size_t width = CVPixelBufferGetWidth(pixelBuffer); 
+                                                          size_t height = CVPixelBufferGetHeight(pixelBuffer);  
+                                                          
+                                                          CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); 
+                                                          CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+                                                          CGImageRef newImage = CGBitmapContextCreateImage(newContext);
+                                                          
+                                                          
+                                                           
+                                                          
+                                                          CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, 
+                                                                                                                      imageDataSampleBuffer, 
+                                                                                                                      kCMAttachmentMode_ShouldPropagate);
+                                                          [self writeCGImageToCameraRoll:newImage withMetadata:(__bridge id)attachments];
+                                                          
+                                                          if (srcImage)
+                                                              CFRelease(srcImage);
+                                                          
+                                                          if (attachments)
+                                                              CFRelease(attachments);
+                                                          
+                                                          //if (cgImageResult)
+                                                          //    CFRelease(cgImageResult);
+                                                          
+                                                      });
+                                                                                                                   
+                                                      
+                                                  }
+	 ];
 }
 
 // use front/back camera

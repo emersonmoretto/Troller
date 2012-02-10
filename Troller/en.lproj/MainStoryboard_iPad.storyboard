@@ -17,7 +17,7 @@
                                 <rect key="frame" x="0.0" y="960" width="768" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem style="plain" id="NV4-zq-JjQ">
+                                    <barButtonItem id="NV4-zq-JjQ">
                                         <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="sDf-wJ-Da2">
                                             <rect key="frame" x="7" y="8" width="219" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -29,15 +29,19 @@
                                                 <action selector="switchCameras:" destination="2" eventType="valueChanged" id="UkL-AV-xDF"/>
                                             </connections>
                                         </segmentedControl>
+                                        <color key="tintColor" red="0.0" green="0.027860167689241138" blue="0.47826086956521741" alpha="0.0" colorSpace="calibratedRGB"/>
                                     </barButtonItem>
                                     <barButtonItem width="142" style="plain" systemItem="fixedSpace" id="VgH-fF-3q2"/>
                                     <barButtonItem systemItem="camera" id="ogN-oj-0T5">
-                                        <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="tintColor" red="0.0" green="0.064482535089032136" blue="0.48369565217391308" alpha="0.0" colorSpace="calibratedRGB"/>
+                                        <connections>
+                                            <action selector="takePicture:" destination="2" id="0h1-MW-W3Z"/>
+                                        </connections>
                                     </barButtonItem>
                                 </items>
                             </toolbar>
                             <view contentMode="scaleToFill" id="2X2-WA-tEY">
-                                <rect key="frame" x="0.0" y="0.0" width="768" height="772"/>
+                                <rect key="frame" x="0.0" y="0.0" width="539" height="699"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>

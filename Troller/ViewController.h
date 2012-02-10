@@ -20,14 +20,16 @@
     AVCaptureStillImageOutput *stillImageOutput;
     dispatch_queue_t videoDataOutputQueue;
     BOOL isUsingFrontFacingCamera;
+  
     IBOutlet UIActivityIndicatorView *activityIndicator;
     //IBOutlet UIView *glassView;
     IBOutlet UIButton *botao;    
-    
+    CGFloat effectiveScale;
     NSMutableArray *faces;
     UIImage *selectedFace;
 	IBOutlet MemeScrollView *memeScrollView;
     UIDeviceOrientation oldOrientation;
+    
 }
 
 - (IBAction)takePicture:(id)sender;
