@@ -11,6 +11,7 @@
 #import <AssertMacros.h>
 #import <ImageIO/ImageIO.h>
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "UIImage-Extensions.h"
 
 @implementation ViewController
 
@@ -94,12 +95,20 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 	memeScrollView.memeDelegate = self;
 	
 	faces = [[NSMutableArray alloc] init];
-	[faces addObject:[UIImage imageNamed:@"troll.png"]];
-	[faces addObject:[UIImage imageNamed:@"poker-face.png"]];
+	[faces addObject:[UIImage imageNamed:@"megusta.png"]];
+	[faces addObject:[UIImage imageNamed:@"impossibru.png"]];
 	[faces addObject:[UIImage imageNamed:@"notbad.png"]];
-	[faces addObject:[UIImage imageNamed:@"poker-face.png"]];
-	[faces addObject:[UIImage imageNamed:@"troll.png"]];
-	[faces addObject:[UIImage imageNamed:@"poker-face.png"]];
+	[faces addObject:[UIImage imageNamed:@"lol.png"]];
+   	[faces addObject:[UIImage imageNamed:@"forever.png"]];
+  	[faces addObject:[UIImage imageNamed:@"yuno.png"]];
+  	[faces addObject:[UIImage imageNamed:@"pedobear.png"]];
+   	[faces addObject:[UIImage imageNamed:@"fuckthat.png"]];
+   	[faces addObject:[UIImage imageNamed:@"fuckyeah.png"]];
+  	[faces addObject:[UIImage imageNamed:@"neildegrasse.png"]];
+  	[faces addObject:[UIImage imageNamed:@"okay.png"]];    
+  	[faces addObject:[UIImage imageNamed:@"seriously.png"]];        
+   	[faces addObject:[UIImage imageNamed:@"motherofgod.png"]];
+    
     
 	int tagidx = 0;
 	for (UIImage *face in faces) {       
@@ -290,7 +299,30 @@ bail:
 	return returnImage;
 }
  */
+/*
 
+static inline double radians (double degrees) {return degrees * M_PI/180;}
+- (UIImage* rotate(UIImage* src, UIImageOrientation orientation)
+{
+    UIGraphicsBeginImageContext(src.size);
+    
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    
+    if (orientation == UIImageOrientationRight) {
+        CGContextRotateCTM (context, radians(90));
+    } else if (orientation == UIImageOrientationLeft) {
+        CGContextRotateCTM (context, radians(-90));
+    } else if (orientation == UIImageOrientationDown) {
+        // NOTHING
+    } else if (orientation == UIImageOrientationUp) {
+        CGContextRotateCTM (context, radians(90));
+    }
+    
+    [src drawAtPoint:CGPointMake(0, 0)];
+    
+    return UIGraphicsGetImageFromCurrentImageContext();
+}
+*/
 - (IBAction)takePicture:(id)sender
 {
 	// Find out the current orientation and tell the still image output.
@@ -361,16 +393,68 @@ bail:
                   size_t height = CVPixelBufferGetHeight(pixelBuffer);  
                   
                   CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); 
-                  CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8,            bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+                  CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
                   
                   CGImageRef newImage = CGBitmapContextCreateImage(newContext);
+                  
                   
                   
                   
                   // aplicando a face de acordo com as features
                   for ( CIFaceFeature *ff in features ) {
                       CGRect faceRect = [ff bounds];
-                      CGContextDrawImage(newContext, faceRect, [selectedFace CGImage]);
+                      
+                      faceRect.size.width *= 1.092188;
+                      faceRect.size.height *= 1.092188;
+                      faceRect.origin.x *= 1.092188;
+                      faceRect.origin.y *= 1.092188;
+                      
+                      faceRect.size.width *= 1.6;
+                      faceRect.size.height *= 1.6;
+                      faceRect.origin.x -= faceRect.size.width/5;
+                      faceRect.origin.y -= faceRect.size.height/6;
+                      
+                      
+                      UIImage * newFace;
+                      switch (curDeviceOrientation) {
+                          case UIDeviceOrientationPortrait:
+                              newFace = [selectedFace imageRotatedByDegrees:-90];
+                              NSLog(@"UIDeviceOrientationPortrait");
+                              //rotationDegrees = -90.;
+                              break;
+                          case UIDeviceOrientationPortraitUpsideDown:
+                              if (isUsingFrontFacingCamera)
+                                  newFace = [selectedFace imageRotatedByDegrees:90];
+                              else
+                                  newFace = [selectedFace imageRotatedByDegrees:90];
+                              
+                              NSLog(@"UIDeviceOrientationPortraitUpsideDown");
+                              //rotationDegrees = 90.;
+                              break;
+                          case UIDeviceOrientationLandscapeLeft:
+                              if (isUsingFrontFacingCamera) 
+                                  newFace = [selectedFace imageRotatedByDegrees:90];                              
+                              
+                              NSLog(@"UIDeviceOrientationLandscapeLeft");
+                              break;
+                          case UIDeviceOrientationLandscapeRight:
+                              if (!isUsingFrontFacingCamera)
+                                  newFace = [selectedFace imageRotatedByDegrees:180];
+                              NSLog(@"UIDeviceOrientationLandscapeRight");
+                              
+                              break;
+                          case UIDeviceOrientationFaceUp:
+                              NSLog(@"UIDeviceOrientationFaceUp");                              
+                              break;
+                          case UIDeviceOrientationFaceDown:
+                              NSLog(@"UIDeviceOrientationFaceDown");
+                              break;
+                          default:
+                              break; // leave the layer in its last known orientation
+                      }
+
+                    
+                      CGContextDrawImage(newContext, faceRect, [newFace CGImage]);
                   }
                   newImage = CGBitmapContextCreateImage(newContext);
                   CGContextRelease (newContext);
@@ -520,18 +604,17 @@ bail:
 		CGFloat widthScaleBy = previewBox.size.width / clap.size.height;
 		CGFloat heightScaleBy = previewBox.size.height / clap.size.width;
 		
-        
+        NSLog(@"aquu %f e %f", widthScaleBy, widthScaleBy);
        faceRect.size.width *= widthScaleBy;
 		faceRect.size.height *= heightScaleBy;
 		faceRect.origin.x *= widthScaleBy;
 		faceRect.origin.y *= heightScaleBy;
       
-       faceRect.size.width *= 1.5;
-		faceRect.size.height *= 1.5;
+       faceRect.size.width *= 1.6;
+		faceRect.size.height *= 1.6;
 		faceRect.origin.x -= faceRect.size.width/5;
-		faceRect.origin.y -= faceRect.size.height/5;
-       //faceRect.origin.y += 20; 
-        
+		faceRect.origin.y -= faceRect.size.height/6;
+             
 		if ( isMirrored )
 			faceRect = CGRectOffset(faceRect, previewBox.origin.x + previewBox.size.width - faceRect.size.width - (faceRect.origin.x * 2), previewBox.origin.y);
 		else
@@ -547,14 +630,15 @@ bail:
 				[currentLayer setHidden:NO];
 			}
 		}
-		
+        
 		// create a new one if necessary
 		if ( !featureLayer ) {
 			featureLayer = [CALayer new];
 
-			[featureLayer setContents:(id)[selectedFace CGImage]];
+			[featureLayer setContents:(id)[selectedFace CGImage]];           
 			[featureLayer setName:@"FaceLayer"];
            [previewLayer addSublayer:featureLayer];
+           
             NSLog(@"layer criada");
 			
 		}

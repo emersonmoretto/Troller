@@ -25,6 +25,24 @@
 		7731FF6614E1C4560034F378 /* troll.png in Resources */ = {isa = PBXBuildFile; fileRef = 7731FF6314E1C4560034F378 /* troll.png */; };
 		7731FF6C14E1C58D0034F378 /* Memeface.m in Sources */ = {isa = PBXBuildFile; fileRef = 7731FF6914E1C58D0034F378 /* Memeface.m */; };
 		7731FF6D14E1C58D0034F378 /* MemeScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 7731FF6B14E1C58D0034F378 /* MemeScrollView.m */; };
+		77AAC0C514E5954F001728DF /* areyouserious.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0B914E5954F001728DF /* areyouserious.jpeg */; };
+		77AAC0C614E5954F001728DF /* forever.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0BA14E5954F001728DF /* forever.png */; };
+		77AAC0C714E5954F001728DF /* freddiemercury.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0BB14E5954F001728DF /* freddiemercury.png */; };
+		77AAC0C814E5954F001728DF /* fuckthat.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0BC14E5954F001728DF /* fuckthat.png */; };
+		77AAC0C914E5954F001728DF /* impossibru-meme.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0BD14E5954F001728DF /* impossibru-meme.jpg */; };
+		77AAC0CA14E5954F001728DF /* lol.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0BE14E5954F001728DF /* lol.png */; };
+		77AAC0CB14E5954F001728DF /* megusta.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0BF14E5954F001728DF /* megusta.png */; };
+		77AAC0CC14E5954F001728DF /* motherofgod.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0C014E5954F001728DF /* motherofgod.png */; };
+		77AAC0CD14E5954F001728DF /* neildegrasse.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0C114E5954F001728DF /* neildegrasse.jpg */; };
+		77AAC0CE14E5954F001728DF /* pedobear.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0C214E5954F001728DF /* pedobear.png */; };
+		77AAC0CF14E5954F001728DF /* youdontsay.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0C314E5954F001728DF /* youdontsay.png */; };
+		77AAC0D014E5954F001728DF /* yuno.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0C414E5954F001728DF /* yuno.png */; };
+		77AAC0D314E5998B001728DF /* impossibru.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0D214E5998B001728DF /* impossibru.png */; };
+		77AAC0DA14E5A1CD001728DF /* UIImage-Extensions.m in Sources */ = {isa = PBXBuildFile; fileRef = 77AAC0D914E5A1CD001728DF /* UIImage-Extensions.m */; };
+		77AAC0DF14E5B767001728DF /* fuckyeah.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0DB14E5B767001728DF /* fuckyeah.png */; };
+		77AAC0E014E5B767001728DF /* neildegrasse.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0DC14E5B767001728DF /* neildegrasse.png */; };
+		77AAC0E114E5B767001728DF /* okay.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0DD14E5B767001728DF /* okay.png */; };
+		77AAC0E214E5B767001728DF /* seriously.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0DE14E5B767001728DF /* seriously.png */; };
 		E7A5DE5014E4A60100F0E47D /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A5DE4F14E4A60100F0E47D /* AssetsLibrary.framework */; };
 		E7A5DE5314E4A61A00F0E47D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A5DE5214E4A61A00F0E47D /* ImageIO.framework */; };
 		E7E1F47714E1F6F700F0FB3D /* notbad.png in Resources */ = {isa = PBXBuildFile; fileRef = E7E1F47614E1F6F700F0FB3D /* notbad.png */; };
@@ -57,6 +75,25 @@
 		7731FF6914E1C58D0034F378 /* Memeface.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Memeface.m; sourceTree = "<group>"; };
 		7731FF6A14E1C58D0034F378 /* MemeScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MemeScrollView.h; sourceTree = "<group>"; };
 		7731FF6B14E1C58D0034F378 /* MemeScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MemeScrollView.m; sourceTree = "<group>"; };
+		77AAC0B914E5954F001728DF /* areyouserious.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = areyouserious.jpeg; path = Art/areyouserious.jpeg; sourceTree = "<group>"; };
+		77AAC0BA14E5954F001728DF /* forever.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = forever.png; path = Art/forever.png; sourceTree = "<group>"; };
+		77AAC0BB14E5954F001728DF /* freddiemercury.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = freddiemercury.png; path = Art/freddiemercury.png; sourceTree = "<group>"; };
+		77AAC0BC14E5954F001728DF /* fuckthat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fuckthat.png; path = Art/fuckthat.png; sourceTree = "<group>"; };
+		77AAC0BD14E5954F001728DF /* impossibru-meme.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "impossibru-meme.jpg"; path = "Art/impossibru-meme.jpg"; sourceTree = "<group>"; };
+		77AAC0BE14E5954F001728DF /* lol.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = lol.png; path = Art/lol.png; sourceTree = "<group>"; };
+		77AAC0BF14E5954F001728DF /* megusta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = megusta.png; path = Art/megusta.png; sourceTree = "<group>"; };
+		77AAC0C014E5954F001728DF /* motherofgod.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = motherofgod.png; path = Art/motherofgod.png; sourceTree = "<group>"; };
+		77AAC0C114E5954F001728DF /* neildegrasse.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = neildegrasse.jpg; path = Art/neildegrasse.jpg; sourceTree = "<group>"; };
+		77AAC0C214E5954F001728DF /* pedobear.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = pedobear.png; path = Art/pedobear.png; sourceTree = "<group>"; };
+		77AAC0C314E5954F001728DF /* youdontsay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = youdontsay.png; path = Art/youdontsay.png; sourceTree = "<group>"; };
+		77AAC0C414E5954F001728DF /* yuno.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = yuno.png; path = Art/yuno.png; sourceTree = "<group>"; };
+		77AAC0D214E5998B001728DF /* impossibru.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = impossibru.png; path = Art/impossibru.png; sourceTree = "<group>"; };
+		77AAC0D814E5A1CD001728DF /* UIImage-Extensions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage-Extensions.h"; sourceTree = "<group>"; };
+		77AAC0D914E5A1CD001728DF /* UIImage-Extensions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage-Extensions.m"; sourceTree = "<group>"; };
+		77AAC0DB14E5B767001728DF /* fuckyeah.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = fuckyeah.png; path = Art/fuckyeah.png; sourceTree = "<group>"; };
+		77AAC0DC14E5B767001728DF /* neildegrasse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = neildegrasse.png; path = Art/neildegrasse.png; sourceTree = "<group>"; };
+		77AAC0DD14E5B767001728DF /* okay.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = okay.png; path = Art/okay.png; sourceTree = "<group>"; };
+		77AAC0DE14E5B767001728DF /* seriously.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = seriously.png; path = Art/seriously.png; sourceTree = "<group>"; };
 		E7A5DE4F14E4A60100F0E47D /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		E7A5DE5214E4A61A00F0E47D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		E7E1F47614E1F6F700F0FB3D /* notbad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notbad.png; sourceTree = "<group>"; };
@@ -130,6 +167,8 @@
 				7731FF4514E19AB00034F378 /* ViewController.h */,
 				7731FF4614E19AB00034F378 /* ViewController.m */,
 				7731FF3414E19AB00034F378 /* Supporting Files */,
+				77AAC0D814E5A1CD001728DF /* UIImage-Extensions.h */,
+				77AAC0D914E5A1CD001728DF /* UIImage-Extensions.m */,
 			);
 			path = Troller;
 			sourceTree = "<group>";
@@ -159,6 +198,23 @@
 		7731FF6E14E1C6C70034F378 /* Art */ = {
 			isa = PBXGroup;
 			children = (
+				77AAC0DB14E5B767001728DF /* fuckyeah.png */,
+				77AAC0DC14E5B767001728DF /* neildegrasse.png */,
+				77AAC0DD14E5B767001728DF /* okay.png */,
+				77AAC0DE14E5B767001728DF /* seriously.png */,
+				77AAC0D214E5998B001728DF /* impossibru.png */,
+				77AAC0B914E5954F001728DF /* areyouserious.jpeg */,
+				77AAC0BA14E5954F001728DF /* forever.png */,
+				77AAC0BB14E5954F001728DF /* freddiemercury.png */,
+				77AAC0BC14E5954F001728DF /* fuckthat.png */,
+				77AAC0BD14E5954F001728DF /* impossibru-meme.jpg */,
+				77AAC0BE14E5954F001728DF /* lol.png */,
+				77AAC0BF14E5954F001728DF /* megusta.png */,
+				77AAC0C014E5954F001728DF /* motherofgod.png */,
+				77AAC0C114E5954F001728DF /* neildegrasse.jpg */,
+				77AAC0C214E5954F001728DF /* pedobear.png */,
+				77AAC0C314E5954F001728DF /* youdontsay.png */,
+				77AAC0C414E5954F001728DF /* yuno.png */,
 				E7E1F47614E1F6F700F0FB3D /* notbad.png */,
 				7731FF6114E1C4550034F378 /* poker-face.png */,
 				7731FF6214E1C4560034F378 /* real_cf.png */,
@@ -224,6 +280,23 @@
 				7731FF6514E1C4560034F378 /* real_cf.png in Resources */,
 				7731FF6614E1C4560034F378 /* troll.png in Resources */,
 				E7E1F47714E1F6F700F0FB3D /* notbad.png in Resources */,
+				77AAC0C514E5954F001728DF /* areyouserious.jpeg in Resources */,
+				77AAC0C614E5954F001728DF /* forever.png in Resources */,
+				77AAC0C714E5954F001728DF /* freddiemercury.png in Resources */,
+				77AAC0C814E5954F001728DF /* fuckthat.png in Resources */,
+				77AAC0C914E5954F001728DF /* impossibru-meme.jpg in Resources */,
+				77AAC0CA14E5954F001728DF /* lol.png in Resources */,
+				77AAC0CB14E5954F001728DF /* megusta.png in Resources */,
+				77AAC0CC14E5954F001728DF /* motherofgod.png in Resources */,
+				77AAC0CD14E5954F001728DF /* neildegrasse.jpg in Resources */,
+				77AAC0CE14E5954F001728DF /* pedobear.png in Resources */,
+				77AAC0CF14E5954F001728DF /* youdontsay.png in Resources */,
+				77AAC0D014E5954F001728DF /* yuno.png in Resources */,
+				77AAC0D314E5998B001728DF /* impossibru.png in Resources */,
+				77AAC0DF14E5B767001728DF /* fuckyeah.png in Resources */,
+				77AAC0E014E5B767001728DF /* neildegrasse.png in Resources */,
+				77AAC0E114E5B767001728DF /* okay.png in Resources */,
+				77AAC0E214E5B767001728DF /* seriously.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -239,6 +312,7 @@
 				7731FF4714E19AB00034F378 /* ViewController.m in Sources */,
 				7731FF6C14E1C58D0034F378 /* Memeface.m in Sources */,
 				7731FF6D14E1C58D0034F378 /* MemeScrollView.m in Sources */,
+				77AAC0DA14E5A1CD001728DF /* UIImage-Extensions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
