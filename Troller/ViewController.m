@@ -203,7 +203,7 @@ bail:
 		if (destinationData)
 			CFRelease(destinationData);
 	}];
-	//[library release];
+	
     
     
 //bail:
@@ -225,6 +225,7 @@ bail:
 		result = AVCaptureVideoOrientationLandscapeLeft;
 	return result;
 }
+
 /*
 - (CGImageRef)newSquareOverlayedImageForFeatures:(NSArray *)features 
                                        inCGImage:(CGImageRef)backgroundImage 
@@ -283,7 +284,6 @@ bail:
     
     // set the appropriate pixel format / image type output setting depending on if we'll need an uncompressed image for
     // the possiblity of drawing the red square over top or if we're just writing a jpeg to the camera roll which is the trival case
- //   if (doingFaceDetection)
 		[stillImageOutput setOutputSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCMPixelFormat_32BGRA] 
 																		forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
 	
@@ -313,10 +313,7 @@ bail:
                                                       // queueing this block to execute on the videoDataOutputQueue serial queue ensures this
                                                       // see the header doc for setSampleBufferDelegate:queue: for more information
                                                       dispatch_sync(videoDataOutputQueue, ^(void) {
-                                                          
-                                                          // get the array of CIFeature instances in the given image with a orientation passed in
-                                                          // the detection will be done based on the orientation but the coordinates in the returned features will
-                                                          // still be based on those of the image.
+                                                         
                                                           NSArray *features = [faceDetector featuresInImage:ciImage options:imageOptions];
                                                          
                                                           CGImageRef srcImage = NULL;
@@ -344,7 +341,7 @@ bail:
                                                           size_t height = CVPixelBufferGetHeight(pixelBuffer);  
                                                           
                                                           CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); 
-                                                          CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+                                                          CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8,            bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
                                                           CGImageRef newImage = CGBitmapContextCreateImage(newContext);
                                                           
                                                           
