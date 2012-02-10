@@ -32,6 +32,20 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 	//[previewLayer release];
 }
 
+
+
+- (UIImage*)imageWithImage:(UIImage*)image 
+              scaledToSize:(CGSize)newSize;
+{
+    UIGraphicsBeginImageContext( newSize );
+    [image drawInRect:CGRectMake(0,0,newSize.width,newSize.height)];
+    UIImage* newImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+    
+    return newImage;
+}
+
+
 - (void)memeScrollViewDidTouchedAt:(int)tagidx
 {
 	[UIView beginAnimations:nil context:NULL];
@@ -51,12 +65,16 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
     
 	selectedFace = [faces objectAtIndex:tagidx];//[UIImage imageNamed:@"notbad.png"];//
 
+    //selectedFace = [self imageWithImage:selectedFace scaledToSize:CGSizeMake(800, 800)];
+    
 	// procurando a layer do meme e trocando o conteudo dela
     NSArray *sublayers = [NSArray arrayWithArray:[previewLayer sublayers]];
     for ( CALayer *layer in sublayers ) {
 		if ( [[layer name] isEqualToString:@"FaceLayer"] ){
+            //[layer setAffineTransform:CGAffineTransformMakeScale(2.5, 2.5)];
             [layer setContents:(id)[selectedFace CGImage]];    
             [layer addAnimation:theAnimation forKey:@"animateOpacity"];
+            
         }
     }
        
@@ -84,7 +102,8 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
 	[faces addObject:[UIImage imageNamed:@"poker-face.png"]];
     
 	int tagidx = 0;
-	for (UIImage *face in faces) {
+	for (UIImage *face in faces) {       
+        
 		[memeScrollView addMeme:face withTag:tagidx];
 		tagidx++;
 	}
@@ -501,10 +520,17 @@ bail:
 		CGFloat widthScaleBy = previewBox.size.width / clap.size.height;
 		CGFloat heightScaleBy = previewBox.size.height / clap.size.width;
 		
-        faceRect.size.width *= widthScaleBy;
+        
+       faceRect.size.width *= widthScaleBy;
 		faceRect.size.height *= heightScaleBy;
 		faceRect.origin.x *= widthScaleBy;
 		faceRect.origin.y *= heightScaleBy;
+      
+       faceRect.size.width *= 1.5;
+		faceRect.size.height *= 1.5;
+		faceRect.origin.x -= faceRect.size.width/5;
+		faceRect.origin.y -= faceRect.size.height/5;
+       //faceRect.origin.y += 20; 
         
 		if ( isMirrored )
 			faceRect = CGRectOffset(faceRect, previewBox.origin.x + previewBox.size.width - faceRect.size.width - (faceRect.origin.x * 2), previewBox.origin.y);
