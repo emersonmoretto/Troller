@@ -289,82 +289,93 @@ bail:
 	
 	[stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection
                                                   completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-                                                     
-                                                          
-                                                    // Got an image.
-                                                      CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(imageDataSampleBuffer);
-                                                      CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, imageDataSampleBuffer, kCMAttachmentMode_ShouldPropagate);
                                                     
-                                                      CIImage *ciImage = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:(__bridge NSDictionary *)attachments];
-                                                      
-                                                      if (attachments)
-                                                          CFRelease(attachments);
-                                                      
-                                                      NSDictionary *imageOptions = nil;
-                                                      
-                                                      CFNumberRef orientationRef = CMGetAttachment(imageDataSampleBuffer, kCGImagePropertyOrientation, NULL);
-                                                      NSNumber *orientation = (__bridge NSNumber *) orientationRef;                                                    
-                                                      
-                                                      if (orientation) {
-                                                          imageOptions = [NSDictionary dictionaryWithObject:orientation forKey:CIDetectorImageOrientation];
-                                                      }
-                                                      
-                                                      // when processing an existing frame we want any new frames to be automatically dropped
-                                                      // queueing this block to execute on the videoDataOutputQueue serial queue ensures this
-                                                      // see the header doc for setSampleBufferDelegate:queue: for more information
-                                                      dispatch_sync(videoDataOutputQueue, ^(void) {
-                                                         
-                                                          NSArray *features = [faceDetector featuresInImage:ciImage options:imageOptions];
-                                                         
-                                                          CGImageRef srcImage = NULL;
-                                                          
-                                                          /*OSStatus err = CreateCGImageFromCVPixelBuffer(CMSampleBufferGetImageBuffer(imageDataSampleBuffer), &srcImage);
-                                                          
-                                                          //check(!err);
-                                                          
-                                                          /*
-                                                          CGImageRef cgImageResult = [self newSquareOverlayedImageForFeatures:features 
-                                                                                                                    inCGImage:srcImage 
-                                                                                                              withOrientation:curDeviceOrientation 
-                                                                                                                  frontFacing:isUsingFrontFacingCamera];
-                                                           */
-                                                          
-                                                          
-                                                          /*Create a CGImageRef from the CVImageBufferRef*/
-                                                          //CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer); 
-                                                          /*Lock the image buffer*/
-                                                          CVPixelBufferLockBaseAddress(pixelBuffer,0); 
-                                                          
-                                                          uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer); 
-                                                          size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer); 
-                                                          size_t width = CVPixelBufferGetWidth(pixelBuffer); 
-                                                          size_t height = CVPixelBufferGetHeight(pixelBuffer);  
-                                                          
-                                                          CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); 
-                                                          CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8,            bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
-                                                          CGImageRef newImage = CGBitmapContextCreateImage(newContext);
-                                                          
-                                                          
-                                                           
-                                                          
-                                                          CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, 
-                                                                                                                      imageDataSampleBuffer, 
-                                                                                                                      kCMAttachmentMode_ShouldPropagate);
-                                                          [self writeCGImageToCameraRoll:newImage withMetadata:(__bridge id)attachments];
-                                                          
-                                                          if (srcImage)
-                                                              CFRelease(srcImage);
-                                                          
-                                                          if (attachments)
-                                                              CFRelease(attachments);
-                                                          
-                                                          //if (cgImageResult)
-                                                          //    CFRelease(cgImageResult);
-                                                          
-                                                      });
-                                                                                                                   
-                                                      
-                                                  }
+                  
+            // Got an image.
+              CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(imageDataSampleBuffer);
+              CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, imageDataSampleBuffer, kCMAttachmentMode_ShouldPropagate);
+            
+              CIImage *ciImage = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:(__bridge NSDictionary *)attachments];
+              
+              if (attachments)
+                  CFRelease(attachments);
+              
+              NSDictionary *imageOptions = nil;
+              
+              CFNumberRef orientationRef = CMGetAttachment(imageDataSampleBuffer, kCGImagePropertyOrientation, NULL);
+              NSNumber *orientation = (__bridge NSNumber *) orientationRef;                                                    
+              
+              if (orientation) {
+                  imageOptions = [NSDictionary dictionaryWithObject:orientation forKey:CIDetectorImageOrientation];
+              }
+              
+              // when processing an existing frame we want any new frames to be automatically dropped
+              // queueing this block to execute on the videoDataOutputQueue serial queue ensures this
+              // see the header doc for setSampleBufferDelegate:queue: for more information
+              dispatch_sync(videoDataOutputQueue, ^(void) {
+                 
+                  NSArray *features = [faceDetector featuresInImage:ciImage options:imageOptions];
+                 
+                  CGImageRef srcImage = NULL;
+                  
+                  /*OSStatus err = CreateCGImageFromCVPixelBuffer(CMSampleBufferGetImageBuffer(imageDataSampleBuffer), &srcImage);
+                  
+                  //check(!err);
+                  
+                  /*
+                  CGImageRef cgImageResult = [self newSquareOverlayedImageForFeatures:features 
+                                                                            inCGImage:srcImage 
+                                                                      withOrientation:curDeviceOrientation 
+                                                                          frontFacing:isUsingFrontFacingCamera];
+                   */
+                  
+                                    
+                  
+                  /*Create a CGImageRef from the CVImageBufferRef*/
+                  //CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer); 
+                  /*Lock the image buffer*/
+                  CVPixelBufferLockBaseAddress(pixelBuffer,0); 
+                  
+                  uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer); 
+                  size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer); 
+                  size_t width = CVPixelBufferGetWidth(pixelBuffer); 
+                  size_t height = CVPixelBufferGetHeight(pixelBuffer);  
+                  
+                  CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); 
+                  CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8,            bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+                  
+                  CGImageRef newImage = CGBitmapContextCreateImage(newContext);
+                  
+                  
+                  
+                  // aplicando a face de acordo com as features
+                  for ( CIFaceFeature *ff in features ) {
+                      CGRect faceRect = [ff bounds];
+                      CGContextDrawImage(newContext, faceRect, [selectedFace CGImage]);
+                  }
+                  newImage = CGBitmapContextCreateImage(newContext);
+                  CGContextRelease (newContext);
+                                                    
+                   
+                  
+                  CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, 
+                                                                              imageDataSampleBuffer, 
+                                                                              kCMAttachmentMode_ShouldPropagate);
+                  [self writeCGImageToCameraRoll:newImage withMetadata:(__bridge id)attachments];
+                  
+                  if (srcImage)
+                      CFRelease(srcImage);
+                  
+                  if (attachments)
+                      CFRelease(attachments);
+                  
+                  //if (cgImageResult)
+                  //    CFRelease(cgImageResult);
+                  
+              });
+                                                                           
+              
+          }
 	 ];
 }
 
