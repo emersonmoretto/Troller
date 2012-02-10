@@ -22,8 +22,8 @@
                                             <rect key="frame" x="7" y="8" width="219" height="30"/>
                                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                             <segments>
-                                                <segment title="Câmera Traseira"/>
-                                                <segment title="Câmera Frontal"/>
+                                                <segment title="Rear Camera"/>
+                                                <segment title="Front Camera"/>
                                             </segments>
                                             <connections>
                                                 <action selector="switchCameras:" destination="2" eventType="valueChanged" id="UkL-AV-xDF"/>
@@ -50,7 +50,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                     </view>
                     <connections>
                         <outlet property="memeScrollView" destination="S4Y-SH-IZP" id="JD6-lP-xva"/>

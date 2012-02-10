@@ -396,22 +396,24 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
                   CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); 
                   CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
                   
-                  CGImageRef newImage = CGBitmapContextCreateImage(newContext);
                   
-                  
-                  
+                  //flipp
+                  //CGAffineTransform flipVertical = CGAffineTransformMake(-1.0, 0.0, 0.0, 1.0, width, 0.0);
+                  //CGContextConcatCTM(newContext,flipVertical);
+
+                  CGImageRef newImage;// = CGBitmapContextCreateImage(newContext);
                   
                   // aplicando a face de acordo com as features
                   for ( CIFaceFeature *ff in features ) {
                       CGRect faceRect = [ff bounds];
                       
-                      faceRect.size.width *= 1.092188;
-                      faceRect.size.height *= 1.092188;
-                      faceRect.origin.x *= 1.092188;
-                      faceRect.origin.y *= 1.092188;
+                      //faceRect.size.width *= 1.092188;
+                      //faceRect.size.height *= 1.092188;
+                      //faceRect.origin.x *= 1.092188;
+                      //faceRect.origin.y *= 1.092188;
                       
-                      faceRect.size.width *= 1.6;
-                      faceRect.size.height *= 1.6;
+                      faceRect.size.width *= 1.5;
+                      faceRect.size.height *= 1.5;
                       faceRect.origin.x -= faceRect.size.width/5;
                       faceRect.origin.y -= faceRect.size.height/6;
                       
@@ -454,7 +456,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
                               break; // leave the layer in its last known orientation
                       }
 
-                    
+                      
                       CGContextDrawImage(newContext, faceRect, [newFace CGImage]);
                   }
                   newImage = CGBitmapContextCreateImage(newContext);
@@ -465,6 +467,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
                   CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, 
                                                                               imageDataSampleBuffer, 
                                                                               kCMAttachmentMode_ShouldPropagate);
+                  
                   [self writeCGImageToCameraRoll:newImage withMetadata:(__bridge id)attachments];
                   
                   if (srcImage)
