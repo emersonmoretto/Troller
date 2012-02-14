@@ -129,8 +129,19 @@
     [imageView setImage:selectedFace];
     
     for ( CIFaceFeature *ff in features ) {
-        NSLog(@"HERE %f e %f", ff.leftEyePosition.x,ff.leftEyePosition.y);
-        [imageView setTransform:CGAffineTransformMakeTranslation(ff.leftEyePosition.y,ff.leftEyePosition.x)];
+        CGRect face = [ff bounds];
+        
+        //faceRect.size.width *= 1.092188;
+        //faceRect.size.height *= 1.092188;
+        //faceRect.origin.x *= 1.092188;
+        //faceRect.origin.y *= 1.092188;
+        
+       // face.size.width *= 1.5;
+       // face.size.height *= 1.5;
+       // face.origin.x -= face.size.width/5;
+      //  face.origin.y -= face.size.height/6;
+      
+        [imageView setTransform:CGAffineTransformMakeTranslation(face.origin.y,face.origin.x)];
         break;
     }
 

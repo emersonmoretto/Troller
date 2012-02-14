@@ -76,7 +76,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                             <imageView multipleTouchEnabled="YES" contentMode="scaleToFill" id="NdK-4S-p1B">
-                                <rect key="frame" x="0.0" y="0.0" width="70" height="84"/>
+                                <rect key="frame" x="0.0" y="0.0" width="250" height="200"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <gestureRecognizers/>
                                 <connections>
