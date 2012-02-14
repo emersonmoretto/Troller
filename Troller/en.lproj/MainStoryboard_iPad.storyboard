@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.0" toolsVersion="1938" systemVersion="10J869" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="1.0" toolsVersion="1938" systemVersion="10K549" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="YoW-0B-lcp">
     <dependencies>
         <development defaultVersion="4200" identifier="xcode"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="933"/>
@@ -35,13 +35,14 @@
                                     <barButtonItem systemItem="camera" id="ogN-oj-0T5">
                                         <color key="tintColor" red="0.0" green="0.064482535089032136" blue="0.48369565217391308" alpha="0.0" colorSpace="calibratedRGB"/>
                                         <connections>
-                                            <action selector="takePicture:" destination="2" id="0h1-MW-W3Z"/>
+                                            <action selector="takePicture:" destination="2" id="EaK-mv-UfV"/>
+                                            <segue destination="3Mx-Ue-fgj" kind="push" identifier="takePictureSegue" id="23n-Pi-RN9"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
                             </toolbar>
                             <view contentMode="scaleToFill" id="2X2-WA-tEY">
-                                <rect key="frame" x="27" y="0.0" width="718" height="775"/>
+                                <rect key="frame" x="25" y="0.0" width="718" height="775"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
@@ -52,15 +53,99 @@
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                     </view>
+                    <navigationItem key="navigationItem" id="HHe-d4-nhb"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="blackTranslucent" prompted="NO"/>
                     <connections>
                         <outlet property="memeScrollView" destination="S4Y-SH-IZP" id="JD6-lP-xva"/>
                         <outlet property="previewView" destination="2X2-WA-tEY" id="dFF-KO-Lii"/>
                     </connections>
                 </viewController>
             </objects>
+            <point key="canvasLocation" x="1418" y="-187"/>
+        </scene>
+        <scene sceneID="u2f-aV-cz5">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9k9-Pe-Eu7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="3Mx-Ue-fgj" customClass="EditSavePhotoViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="5Ue-d8-bFR">
+                        <rect key="frame" x="0.0" y="64" width="768" height="960"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <imageView multipleTouchEnabled="YES" contentMode="scaleToFill" id="NdK-4S-p1B">
+                                <rect key="frame" x="0.0" y="0.0" width="70" height="84"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                <gestureRecognizers/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="MWP-Qa-j5S" appends="YES" id="WxE-f0-YyB"/>
+                                    <outletCollection property="gestureRecognizers" destination="bfG-Ie-EHM" appends="YES" id="lMd-i6-6kh"/>
+                                    <outletCollection property="gestureRecognizers" destination="blT-x7-IZz" appends="YES" id="b9m-XV-ZGg"/>
+                                </connections>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <accessibility key="accessibilityConfiguration">
+                            <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                        </accessibility>
+                    </view>
+                    <navigationItem key="navigationItem" id="S3s-CB-7VC"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="imageView" destination="NdK-4S-p1B" id="vUt-cc-9fm"/>
+                        <outlet property="view" destination="5Ue-d8-bFR" id="IYr-iS-DMe"/>
+                    </connections>
+                </viewController>
+                <pinchGestureRecognizer id="MWP-Qa-j5S">
+                    <connections>
+                        <action selector="handlePinch:" destination="3Mx-Ue-fgj" id="5aw-sD-iee"/>
+                        <outlet property="delegate" destination="3Mx-Ue-fgj" id="kwy-Qf-Y5f"/>
+                    </connections>
+                </pinchGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="bfG-Ie-EHM">
+                    <connections>
+                        <action selector="handlePan:" destination="3Mx-Ue-fgj" id="HMG-bJ-hS1"/>
+                        <outlet property="delegate" destination="3Mx-Ue-fgj" id="cAa-At-j5o"/>
+                    </connections>
+                </panGestureRecognizer>
+                <rotationGestureRecognizer id="blT-x7-IZz">
+                    <connections>
+                        <action selector="handleRotate:" destination="3Mx-Ue-fgj" id="sIc-Ii-ZrF"/>
+                        <outlet property="delegate" destination="3Mx-Ue-fgj" id="gLr-Lx-slf"/>
+                    </connections>
+                </rotationGestureRecognizer>
+            </objects>
+            <point key="canvasLocation" x="2768" y="-94"/>
+        </scene>
+        <scene sceneID="jZQ-S4-nX0">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UZD-ME-MYT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationController id="YoW-0B-lcp" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="Zsg-Bs-KrR"/>
+                    <navigationBar key="navigationBar" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" barStyle="blackTranslucent" id="Nd3-Pw-8zd">
+                        <rect key="frame" x="0.0" y="0.0" width="768" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="2" kind="relationship" relationship="rootViewController" id="dec-iN-HUk"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="444" y="-187"/>
         </scene>
     </scenes>
     <classes>
+        <class className="EditSavePhotoViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/EditSavePhotoViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="handlePan:" candidateClass="UIPanGestureRecognizer"/>
+                <relationship kind="action" name="handlePinch:" candidateClass="UIPinchGestureRecognizer"/>
+                <relationship kind="action" name="handleRotate:" candidateClass="UIRotationGestureRecognizer"/>
+                <relationship kind="outlet" name="imageView" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="memeScrollView" candidateClass="MemeScrollView"/>
+                <relationship kind="outlet" name="view" candidateClass="UIView"/>
+            </relationships>
+        </class>
         <class className="MemeScrollView" superclassName="UIScrollView">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/MemeScrollView.h"/>
         </class>
@@ -68,9 +153,9 @@
             <source key="sourceIdentifier" type="project" relativePath="./Classes/ViewController.h"/>
             <relationships>
                 <relationship kind="action" name="switchCameras:"/>
-                <relationship kind="action" name="takePicture:"/>
                 <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
                 <relationship kind="outlet" name="botao" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="editSavePhotoViewController" candidateClass="EditSavePhotoViewController"/>
                 <relationship kind="outlet" name="memeScrollView" candidateClass="MemeScrollView"/>
                 <relationship kind="outlet" name="previewView" candidateClass="UIView"/>
             </relationships>

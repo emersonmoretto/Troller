@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import <AVFoundation/AVFoundation.h>
 #import "MemeScrollView.h"
+#import "EditSavePhotoViewController.h"
 
 @interface ViewController : UIViewController<AVCaptureVideoDataOutputSampleBufferDelegate, MemeScrollViewDelegate>{
     
@@ -27,12 +28,15 @@
     CGFloat effectiveScale;
     NSMutableArray *faces;
     UIImage *selectedFace;
+    CGRect lastFaceRect;
 	IBOutlet MemeScrollView *memeScrollView;
     UIDeviceOrientation oldOrientation;
     
+    IBOutlet EditSavePhotoViewController * editSavePhotoViewController;
+    
 }
 
-- (IBAction)takePicture:(id)sender;
+
 - (IBAction)switchCameras:(id)sender;
 
 @end

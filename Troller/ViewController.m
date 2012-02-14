@@ -195,54 +195,6 @@ bail:
 	}
 }
 
-// utility routine used after taking a still image to write the resulting image to the camera roll
-- (BOOL)writeCGImageToCameraRoll:(CGImageRef)cgImage withMetadata:(NSDictionary *)metadata
-{
-	CFMutableDataRef destinationData = CFDataCreateMutable(kCFAllocatorDefault, 0);
-	CGImageDestinationRef destination = CGImageDestinationCreateWithData(destinationData, 
-																		 CFSTR("public.jpeg"), 
-																		 1, 
-																		 NULL);
-	BOOL success = (destination != NULL);
-	//require(success, bail);
-    
-	const float JPEGCompQuality = 0.85f; // JPEGHigherQuality
-	CFMutableDictionaryRef optionsDict = NULL;
-	CFNumberRef qualityNum = NULL;
-	
-	qualityNum = CFNumberCreate(0, kCFNumberFloatType, &JPEGCompQuality);    
-	if ( qualityNum ) {
-		optionsDict = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-		if ( optionsDict )
-			CFDictionarySetValue(optionsDict, kCGImageDestinationLossyCompressionQuality, qualityNum);
-		CFRelease( qualityNum );
-	}
-	
-	CGImageDestinationAddImage( destination, cgImage, optionsDict );
-	success = CGImageDestinationFinalize( destination );
-    
-	if ( optionsDict )
-		CFRelease(optionsDict);
-	
-	//require(success, bail);
-	
-	CFRetain(destinationData);
-	ALAssetsLibrary *library = [ALAssetsLibrary new];
-	[library writeImageDataToSavedPhotosAlbum:(__bridge id)destinationData metadata:metadata completionBlock:^(NSURL *assetURL, NSError *error) {
-		if (destinationData)
-			CFRelease(destinationData);
-	}];
-	
-    
-    
-//bail:
-	if (destinationData)
-		CFRelease(destinationData);
-	if (destination)
-		CFRelease(destination);
-    
-	return success;
-}
 
 // utility routing used during image capture to set up capture orientation
 - (AVCaptureVideoOrientation)avOrientationForDeviceOrientation:(UIDeviceOrientation)deviceOrientation
@@ -324,8 +276,10 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
     return UIGraphicsGetImageFromCurrentImageContext();
 }
 */
-- (IBAction)takePicture:(id)sender
+
+- (void)takePicture:(EditSavePhotoViewController *)editor
 {
+            
 	// Find out the current orientation and tell the still image output.
 	AVCaptureConnection *stillImageConnection = [stillImageOutput connectionWithMediaType:AVMediaTypeVideo];
 	UIDeviceOrientation curDeviceOrientation = [[UIDevice currentDevice] orientation];
@@ -336,153 +290,161 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
     
     // set the appropriate pixel format / image type output setting depending on if we'll need an uncompressed image for
     // the possiblity of drawing the red square over top or if we're just writing a jpeg to the camera roll which is the trival case
-		[stillImageOutput setOutputSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCMPixelFormat_32BGRA] 
-																		forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
+		[stillImageOutput setOutputSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCMPixelFormat_32BGRA] forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
 	
 	[stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection
                                                   completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
                                                     
                   
-            // Got an image.
-              CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(imageDataSampleBuffer);
-              CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, imageDataSampleBuffer, kCMAttachmentMode_ShouldPropagate);
-            
-              CIImage *ciImage = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:(__bridge NSDictionary *)attachments];
+      
+      
+      // Got an image.
+      CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(imageDataSampleBuffer);
+      CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, imageDataSampleBuffer, kCMAttachmentMode_ShouldPropagate);
+      
+      CIImage *ciImage = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:(__bridge NSDictionary *)attachments];
+      
+                                                      
+      if (attachments)
+          CFRelease(attachments);
+      
+      NSDictionary *imageOptions = nil;
+      
+      CFNumberRef orientationRef = CMGetAttachment(imageDataSampleBuffer, kCGImagePropertyOrientation, NULL);
+      NSNumber *orientation = (__bridge NSNumber *) orientationRef;                                                    
+      
+      if (orientation) {
+          imageOptions = [NSDictionary dictionaryWithObject:orientation forKey:CIDetectorImageOrientation];
+      }
+      
+      // when processing an existing frame we want any new frames to be automatically dropped
+      // queueing this block to execute on the videoDataOutputQueue serial queue ensures this
+      // see the header doc for setSampleBufferDelegate:queue: for more information
+      dispatch_sync(videoDataOutputQueue, ^(void) {
+          
+          NSArray *features = [faceDetector featuresInImage:ciImage options:imageOptions];
+          
+          editor.image = ciImage;
+          editor.features = features;
+          editor.selectedFace = selectedFace;
+          
+          NSLog(@"takee %@",ciImage);
+          
+          CGImageRef srcImage = NULL;
+          
+          /*OSStatus err = CreateCGImageFromCVPixelBuffer(CMSampleBufferGetImageBuffer(imageDataSampleBuffer), &srcImage);
+           
+           //check(!err);
+           
+           /*
+           CGImageRef cgImageResult = [self newSquareOverlayedImageForFeatures:features 
+           inCGImage:srcImage 
+           withOrientation:curDeviceOrientation 
+           frontFacing:isUsingFrontFacingCamera];
+           */
+          
+          
+          
+          /*Create a CGImageRef from the CVImageBufferRef*/
+          //CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer); 
+          /*Lock the image buffer*/
+          CVPixelBufferLockBaseAddress(pixelBuffer,0); 
+          
+          uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer); 
+          size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer); 
+          size_t width = CVPixelBufferGetWidth(pixelBuffer); 
+          size_t height = CVPixelBufferGetHeight(pixelBuffer);  
+          
+          CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); 
+          CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+          
+          
+          //flipp
+          //CGAffineTransform flipVertical = CGAffineTransformMake(-1.0, 0.0, 0.0, 1.0, width, 0.0);
+          //CGContextConcatCTM(newContext,flipVertical);
+          
+          CGImageRef newImage;// = CGBitmapContextCreateImage(newContext);
+          
+          // aplicando a face de acordo com as features
+          for ( CIFaceFeature *ff in features ) {
+              CGRect faceRect = [ff bounds];
               
-              if (attachments)
-                  CFRelease(attachments);
+              //faceRect.size.width *= 1.092188;
+              //faceRect.size.height *= 1.092188;
+              //faceRect.origin.x *= 1.092188;
+              //faceRect.origin.y *= 1.092188;
               
-              NSDictionary *imageOptions = nil;
+              faceRect.size.width *= 1.5;
+              faceRect.size.height *= 1.5;
+              faceRect.origin.x -= faceRect.size.width/5;
+              faceRect.origin.y -= faceRect.size.height/6;
               
-              CFNumberRef orientationRef = CMGetAttachment(imageDataSampleBuffer, kCGImagePropertyOrientation, NULL);
-              NSNumber *orientation = (__bridge NSNumber *) orientationRef;                                                    
               
-              if (orientation) {
-                  imageOptions = [NSDictionary dictionaryWithObject:orientation forKey:CIDetectorImageOrientation];
+              UIImage * newFace;
+              switch (curDeviceOrientation) {
+                  case UIDeviceOrientationPortrait:
+                      newFace = [selectedFace imageRotatedByDegrees:-90];
+                      NSLog(@"UIDeviceOrientationPortrait");
+                      //rotationDegrees = -90.;
+                      break;
+                  case UIDeviceOrientationPortraitUpsideDown:
+                      if (isUsingFrontFacingCamera)
+                          newFace = [selectedFace imageRotatedByDegrees:90];
+                      else
+                          newFace = [selectedFace imageRotatedByDegrees:90];
+                      
+                      NSLog(@"UIDeviceOrientationPortraitUpsideDown");
+                      //rotationDegrees = 90.;
+                      break;
+                  case UIDeviceOrientationLandscapeLeft:
+                      if (isUsingFrontFacingCamera) 
+                          newFace = [selectedFace imageRotatedByDegrees:90];                              
+                      
+                      NSLog(@"UIDeviceOrientationLandscapeLeft");
+                      break;
+                  case UIDeviceOrientationLandscapeRight:
+                      if (!isUsingFrontFacingCamera)
+                          newFace = [selectedFace imageRotatedByDegrees:180];
+                      NSLog(@"UIDeviceOrientationLandscapeRight");
+                      
+                      break;
+                  case UIDeviceOrientationFaceUp:
+                      NSLog(@"UIDeviceOrientationFaceUp");                              
+                      break;
+                  case UIDeviceOrientationFaceDown:
+                      NSLog(@"UIDeviceOrientationFaceDown");
+                      break;
+                  default:
+                      break; // leave the layer in its last known orientation
               }
               
-              // when processing an existing frame we want any new frames to be automatically dropped
-              // queueing this block to execute on the videoDataOutputQueue serial queue ensures this
-              // see the header doc for setSampleBufferDelegate:queue: for more information
-              dispatch_sync(videoDataOutputQueue, ^(void) {
-                 
-                  NSArray *features = [faceDetector featuresInImage:ciImage options:imageOptions];
-                 
-                  CGImageRef srcImage = NULL;
-                  
-                  /*OSStatus err = CreateCGImageFromCVPixelBuffer(CMSampleBufferGetImageBuffer(imageDataSampleBuffer), &srcImage);
-                  
-                  //check(!err);
-                  
-                  /*
-                  CGImageRef cgImageResult = [self newSquareOverlayedImageForFeatures:features 
-                                                                            inCGImage:srcImage 
-                                                                      withOrientation:curDeviceOrientation 
-                                                                          frontFacing:isUsingFrontFacingCamera];
-                   */
-                  
-                                    
-                  
-                  /*Create a CGImageRef from the CVImageBufferRef*/
-                  //CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer); 
-                  /*Lock the image buffer*/
-                  CVPixelBufferLockBaseAddress(pixelBuffer,0); 
-                  
-                  uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddress(pixelBuffer); 
-                  size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer); 
-                  size_t width = CVPixelBufferGetWidth(pixelBuffer); 
-                  size_t height = CVPixelBufferGetHeight(pixelBuffer);  
-                  
-                  CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); 
-                  CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
-                  
-                  
-                  //flipp
-                  //CGAffineTransform flipVertical = CGAffineTransformMake(-1.0, 0.0, 0.0, 1.0, width, 0.0);
-                  //CGContextConcatCTM(newContext,flipVertical);
-
-                  CGImageRef newImage;// = CGBitmapContextCreateImage(newContext);
-                  
-                  // aplicando a face de acordo com as features
-                  for ( CIFaceFeature *ff in features ) {
-                      CGRect faceRect = [ff bounds];
-                      
-                      //faceRect.size.width *= 1.092188;
-                      //faceRect.size.height *= 1.092188;
-                      //faceRect.origin.x *= 1.092188;
-                      //faceRect.origin.y *= 1.092188;
-                      
-                      faceRect.size.width *= 1.5;
-                      faceRect.size.height *= 1.5;
-                      faceRect.origin.x -= faceRect.size.width/5;
-                      faceRect.origin.y -= faceRect.size.height/6;
-                      
-                      
-                      UIImage * newFace;
-                      switch (curDeviceOrientation) {
-                          case UIDeviceOrientationPortrait:
-                              newFace = [selectedFace imageRotatedByDegrees:-90];
-                              NSLog(@"UIDeviceOrientationPortrait");
-                              //rotationDegrees = -90.;
-                              break;
-                          case UIDeviceOrientationPortraitUpsideDown:
-                              if (isUsingFrontFacingCamera)
-                                  newFace = [selectedFace imageRotatedByDegrees:90];
-                              else
-                                  newFace = [selectedFace imageRotatedByDegrees:90];
-                              
-                              NSLog(@"UIDeviceOrientationPortraitUpsideDown");
-                              //rotationDegrees = 90.;
-                              break;
-                          case UIDeviceOrientationLandscapeLeft:
-                              if (isUsingFrontFacingCamera) 
-                                  newFace = [selectedFace imageRotatedByDegrees:90];                              
-                              
-                              NSLog(@"UIDeviceOrientationLandscapeLeft");
-                              break;
-                          case UIDeviceOrientationLandscapeRight:
-                              if (!isUsingFrontFacingCamera)
-                                  newFace = [selectedFace imageRotatedByDegrees:180];
-                              NSLog(@"UIDeviceOrientationLandscapeRight");
-                              
-                              break;
-                          case UIDeviceOrientationFaceUp:
-                              NSLog(@"UIDeviceOrientationFaceUp");                              
-                              break;
-                          case UIDeviceOrientationFaceDown:
-                              NSLog(@"UIDeviceOrientationFaceDown");
-                              break;
-                          default:
-                              break; // leave the layer in its last known orientation
-                      }
-
-                      
-                      CGContextDrawImage(newContext, faceRect, [newFace CGImage]);
-                  }
-                  newImage = CGBitmapContextCreateImage(newContext);
-                  CGContextRelease (newContext);
-                                                    
-                   
-                  
-                  CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, 
-                                                                              imageDataSampleBuffer, 
-                                                                              kCMAttachmentMode_ShouldPropagate);
-                  
-                  [self writeCGImageToCameraRoll:newImage withMetadata:(__bridge id)attachments];
-                  
-                  if (srcImage)
-                      CFRelease(srcImage);
-                  
-                  if (attachments)
-                      CFRelease(attachments);
-                  
-                  //if (cgImageResult)
-                  //    CFRelease(cgImageResult);
-                  
-              });
-                                                                           
               
+              CGContextDrawImage(newContext, faceRect, [newFace CGImage]);
           }
+          newImage = CGBitmapContextCreateImage(newContext);
+          CGContextRelease (newContext);
+          
+          
+          
+          CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, 
+                                                                      imageDataSampleBuffer, 
+                                                                      kCMAttachmentMode_ShouldPropagate);
+          
+          //[self writeCGImageToCameraRoll:newImage withMetadata:(__bridge id)attachments];
+          
+          if (srcImage)
+              CFRelease(srcImage);
+          
+          if (attachments)
+              CFRelease(attachments);
+          
+      });
+      
+      
+      
+
+                                                      
+                      }
 	 ];
 }
 
@@ -646,6 +608,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
             NSLog(@"layer criada");
 			
 		}
+        lastFaceRect = faceRect;
 		[featureLayer setFrame:faceRect];
 		
         
@@ -831,6 +794,17 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
     // Release any cached data, images, etc that aren't in use.
 }
 
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender{
+    if([[segue identifier] isEqualToString:@"takePictureSegue"]){
+        
+        editSavePhotoViewController = (EditSavePhotoViewController *)[segue destinationViewController];
+        
+        [self takePicture:editSavePhotoViewController];
+
+            
+    }
+}
+
 #pragma mark - View lifecycle
 
 - (void)viewDidLoad
@@ -840,17 +814,32 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
     [self setupMemeScrollView];
   	[self setupAVCapture];
     
+    
+    
     [[UIDevice  currentDevice] beginGeneratingDeviceOrientationNotifications];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(detectOrientation:) name:@"UIDeviceOrientationDidChangeNotification" object:nil];
     oldOrientation = [[UIDevice currentDevice] orientation];
 	NSDictionary *detectorOptions = [[NSDictionary alloc] initWithObjectsAndKeys:CIDetectorAccuracyLow, CIDetectorAccuracy, nil];
 	faceDetector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:detectorOptions];
+    
+    //UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"MainStoryboard_iPad" bundle:nil];
+    
+     //editSavePhotoViewController = [storyboard instantiateViewControllerWithIdentifier:@"EditSavePhotoViewController"];
+    
+    //[editSavePhotoViewController setModalPresentationStyle:UIModalPresentationFullScreen];
+    
+   // [self presentModalViewController:editSavePhotoViewController animated:YES];
+
+    
+    //editSavePhotoViewController = [[EditSavePhotoViewController alloc] init];
+    
 	//[detectorOptions release];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self.navigationController.navigationBar setHidden:YES];
 }
 
 - (void)viewDidAppear:(BOOL)animated
