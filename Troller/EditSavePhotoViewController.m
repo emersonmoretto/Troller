@@ -11,7 +11,7 @@
 
 @implementation EditSavePhotoViewController
 
-@synthesize image,selectedFace,features,faceRect;
+@synthesize imageOptions,selectedFace,features,faceRect, imageRef, attachments;
 
 
 -(void)takePicture{    
@@ -30,12 +30,9 @@
 - (void)didReceiveMemoryWarning
 {
     // Releases the view if it doesn't have a superview.
-    [super didReceiveMemoryWarning];
-    
+    [super didReceiveMemoryWarning];    
     // Release any cached data, images, etc that aren't in use.
 }
-
-
 
 
 // utility routine used after taking a still image to write the resulting image to the camera roll
@@ -136,7 +133,49 @@
         [imageView setTransform:CGAffineTransformMakeTranslation(ff.leftEyePosition.y,ff.leftEyePosition.x)];
         break;
     }
-    //[view addSubview:[UIImage imageWithCIImage:image]];
+
+    
+    /*
+     NSNumber *orientation = [imageOptions objectForKey:CIDetectorImageOrientation];
+     1      Top, left
+     2      Top, right
+     3      Bottom, right
+     4      Bottom, left
+     5      Left, top
+     6      Right, top
+     7      Right, bottom
+     8      Left, bottom*/
+    
+    
+    CGFloat rotationDegrees = 0.;
+    switch ([[UIDevice currentDevice] orientation]) {
+        case UIDeviceOrientationPortrait:            
+            NSLog(@"UIDeviceOrientationPortrait");
+            rotationDegrees = 90.;
+            break;
+        case UIDeviceOrientationPortraitUpsideDown:
+            NSLog(@"UIDeviceOrientationPortraitUpsideDown");
+            break;
+        case UIDeviceOrientationLandscapeLeft:
+            NSLog(@"UIDeviceOrientationLandscapeLeft");
+            rotationDegrees = 0.;
+            break;
+        case UIDeviceOrientationLandscapeRight:
+            NSLog(@"UIDeviceOrientationLandscapeRight");
+            rotationDegrees = 180.;
+            break;
+        case UIDeviceOrientationFaceUp:
+            NSLog(@"UIDeviceOrientationFaceUp");    //dafuq?                           
+            break;
+        case UIDeviceOrientationFaceDown:
+            NSLog(@"UIDeviceOrientationFaceDown"); //dafuq?
+            break;
+        default:
+            break; // leave the layer in its last known orientation
+    }
+    
+    // Convert, rotate and apply image to do UIImageView
+    [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:rotationDegrees]];
 }
 
 
@@ -144,6 +183,7 @@
 {
     imageView = nil;
     view = nil;
+    backgroundView = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;

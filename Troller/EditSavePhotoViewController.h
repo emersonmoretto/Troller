@@ -11,15 +11,19 @@
 #import <ImageIO/ImageIO.h>
 #import <AssetsLibrary/AssetsLibrary.h>
 #import "MemeScrollView.h"
+#import "UIImage-Extensions.h"
 
 
 @interface EditSavePhotoViewController : UIViewController<UIGestureRecognizerDelegate>{
     
-    CIImage *image;
+    CGImageRef imageRef;
     UIImage *selectedFace;
     NSArray *features;
     CGRect faceRect;
+    NSDictionary *imageOptions;
+    CFDictionaryRef attachments;
     
+    __weak IBOutlet UIImageView *backgroundView;
     __weak IBOutlet UIView *view;
     __weak IBOutlet UIImageView *imageView;
     IBOutlet MemeScrollView *memeScrollView;
@@ -31,8 +35,10 @@
 - (IBAction)handlePinch:(UIPinchGestureRecognizer *)recognizer;
 - (IBAction)handleRotate:(UIRotationGestureRecognizer *)recognizer;
 
+@property(nonatomic) CFDictionaryRef attachments;
 @property(nonatomic) CGRect faceRect;
-@property(nonatomic,copy) CIImage * image;
+@property(nonatomic) CGImageRef imageRef;
+@property(nonatomic,copy) NSDictionary *imageOptions;
 @property(nonatomic,copy) UIImage * selectedFace;
 @property(nonatomic,copy) NSArray *features;
 

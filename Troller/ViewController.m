@@ -206,17 +206,33 @@ bail:
 		result = AVCaptureVideoOrientationLandscapeLeft;
 	return result;
 }
-
 /*
+
 - (CGImageRef)newSquareOverlayedImageForFeatures:(NSArray *)features 
                                        inCGImage:(CGImageRef)backgroundImage 
                                  withOrientation:(UIDeviceOrientation)orientation 
                                      frontFacing:(BOOL)isFrontFacing
 {
+    
+    
+
+    
 	CGImageRef returnImage = NULL;
 	CGRect backgroundImageRect = CGRectMake(0., 0., CGImageGetWidth(backgroundImage), CGImageGetHeight(backgroundImage));
-	CGContextRef bitmapContext = CreateCGBitmapContextForSize(backgroundImageRect.size);
-	CGContextClearRect(bitmapContext, backgroundImageRect);
+//	CGContextRef bitmapContext = CGBitmapContextCreate(
+	
+                                                       
+    uint8_t *baseAddress = (uint8_t *)CVPixelBufferGetBaseAddres(backgroundImage); 
+    size_t bytesPerRow = CVPixelBufferGetBytesPerRow(pixelBuffer); 
+    size_t width = CVPixelBufferGetWidth(pixelBuffer); 
+    size_t height = CVPixelBufferGetHeight(pixelBuffer);  
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB(); 
+    CGContextRef newContext = CGBitmapContextCreate(baseAddress, width, height, 8, bytesPerRow, colorSpace, kCGBitmapByteOrder32Little | kCGImageAlphaPremultipliedFirst);
+    
+
+    
+    CGContextClearRect(bitmapContext, backgroundImageRect);
 	CGContextDrawImage(bitmapContext, backgroundImageRect, backgroundImage);
 	CGFloat rotationDegrees = 0.;
 	
@@ -251,7 +267,8 @@ bail:
 	
 	return returnImage;
 }
- */
+*/
+ 
 /*
 
 static inline double radians (double degrees) {return degrees * M_PI/180;}
@@ -302,9 +319,8 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
       CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(imageDataSampleBuffer);
       CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, imageDataSampleBuffer, kCMAttachmentMode_ShouldPropagate);
       
-      CIImage *ciImage = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:(__bridge NSDictionary *)attachments];
-      
-                                                      
+      CIImage *ciImage = [[CIImage alloc] initWithCVPixelBuffer:pixelBuffer options:(__bridge NSDictionary *)attachments];      
+               
       if (attachments)
           CFRelease(attachments);
       
@@ -324,28 +340,24 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
           
           NSArray *features = [faceDetector featuresInImage:ciImage options:imageOptions];
           
-          editor.image = ciImage;
-          editor.features = features;
-          editor.selectedFace = selectedFace;
-          
-          NSLog(@"takee %@",ciImage);
-          
           CGImageRef srcImage = NULL;
+          
+          /*
+          CGImageRef cgImageResult = [self newSquareOverlayedImageForFeatures:features 
+                                                                    inCGImage:srcImage 
+                                                              withOrientation:curDeviceOrientation 
+                                                                  frontFacing:isUsingFrontFacingCamera];
+          */
           
           /*OSStatus err = CreateCGImageFromCVPixelBuffer(CMSampleBufferGetImageBuffer(imageDataSampleBuffer), &srcImage);
            
-           //check(!err);
+           //check(!err);         
            
-           /*
-           CGImageRef cgImageResult = [self newSquareOverlayedImageForFeatures:features 
-           inCGImage:srcImage 
-           withOrientation:curDeviceOrientation 
-           frontFacing:isUsingFrontFacingCamera];
+           
+           
+          
+           Create a CGImageRef from the CVImageBufferRef
            */
-          
-          
-          
-          /*Create a CGImageRef from the CVImageBufferRef*/
           //CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer); 
           /*Lock the image buffer*/
           CVPixelBufferLockBaseAddress(pixelBuffer,0); 
@@ -364,6 +376,15 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
           //CGContextConcatCTM(newContext,flipVertical);
           
           CGImageRef newImage;// = CGBitmapContextCreateImage(newContext);
+          
+          newImage = CGBitmapContextCreateImage(newContext);
+          editor.imageRef = newImage;          
+          CGContextRelease (newContext);
+          
+          editor.features = features;
+          editor.selectedFace = selectedFace;
+          editor.imageOptions = imageOptions;
+ 
           
           // aplicando a face de acordo com as features
           for ( CIFaceFeature *ff in features ) {
@@ -418,18 +439,17 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
                       break; // leave the layer in its last known orientation
               }
               
-              
-              CGContextDrawImage(newContext, faceRect, [newFace CGImage]);
+              // Aplicando o meme sobre a foto
+              //CGContextDrawImage(newContext, faceRect, [newFace CGImage]);
           }
-          newImage = CGBitmapContextCreateImage(newContext);
-          CGContextRelease (newContext);
           
           
-          
+
           CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, 
                                                                       imageDataSampleBuffer, 
                                                                       kCMAttachmentMode_ShouldPropagate);
           
+          editor.attachments = attachments;
           //[self writeCGImageToCameraRoll:newImage withMetadata:(__bridge id)attachments];
           
           if (srcImage)
@@ -719,7 +739,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
     [UIView commitAnimations];
     
     // get the width of the face
-    CGFloat faceWidth = ff.bounds.size.width;
+    //CGFloat faceWidth = ff.bounds.size.width;
 
     		//768x772
     /*
