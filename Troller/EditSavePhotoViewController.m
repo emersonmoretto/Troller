@@ -11,7 +11,7 @@
 
 @implementation EditSavePhotoViewController
 
-@synthesize imageOptions,selectedFace,features,faceRect, imageRef, attachments;
+@synthesize imageOptions,selectedFace,features,frameRect, imageRef, attachments,isMirrored;
 
 
 -(void)takePicture{    
@@ -84,6 +84,134 @@
 	return success;
 }
 
+// find where the video box is positioned within the preview layer based on the video size and gravity
++ (CGRect)videoPreviewBoxForGravity:(NSString *)gravity frameSize:(CGSize)frameSize apertureSize:(CGSize)apertureSize
+{
+    CGFloat apertureRatio = apertureSize.height / apertureSize.width;
+    CGFloat viewRatio = frameSize.width / frameSize.height;
+    
+    CGSize size = CGSizeZero;
+    if ([gravity isEqualToString:AVLayerVideoGravityResizeAspectFill]) {
+        if (viewRatio > apertureRatio) {
+            size.width = frameSize.width;
+            size.height = apertureSize.width * (frameSize.width / apertureSize.height);
+        } else {
+            size.width = apertureSize.height * (frameSize.height / apertureSize.width);
+            size.height = frameSize.height;
+        }
+    } else if ([gravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
+        if (viewRatio > apertureRatio) {
+            size.width = apertureSize.height * (frameSize.height / apertureSize.width);
+            size.height = frameSize.height;
+        } else {
+            size.width = frameSize.width;
+            size.height = apertureSize.width * (frameSize.width / apertureSize.height);
+        }
+    } else if ([gravity isEqualToString:AVLayerVideoGravityResize]) {
+        size.width = frameSize.width;
+        size.height = frameSize.height;
+    }
+	
+	CGRect videoBox;
+	videoBox.size = size;
+	if (size.width < frameSize.width)
+		videoBox.origin.x = (frameSize.width - size.width) / 2;
+	else
+		videoBox.origin.x = (size.width - frameSize.width) / 2;
+	
+	if ( size.height < frameSize.height )
+		videoBox.origin.y = (frameSize.height - size.height) / 2;
+	else
+		videoBox.origin.y = (size.height - frameSize.height) / 2;
+    
+	return videoBox;
+}
+
+- (double)degreesToRadians:(int)degrees
+{
+    NSNumber * number = [NSNumber numberWithInt:degrees];
+    double radians = ([number doubleValue] * M_PI) / 180.0;
+    return radians;
+}
+
+- (void)drawMemes:(CGRect)clap orientation:(UIDeviceOrientation)orientation
+{
+	NSInteger featuresCount = [features count];
+	
+	[CATransaction begin];
+	[CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
+	
+  	
+	if ( featuresCount == 0) {
+		[CATransaction commit];
+		return; // early bail.
+	}
+    
+	CGSize parentFrameSize = [backgroundView frame].size;
+    
+	CGRect previewBox = [EditSavePhotoViewController videoPreviewBoxForGravity:AVLayerVideoGravityResizeAspectFill 
+                                                        frameSize:parentFrameSize 
+                                                     apertureSize:clap.size];
+	
+        
+	for ( CIFaceFeature *ff in features ) {
+		// find the correct position for the square layer within the previewLayer
+		// the feature box originates in the bottom left of the video frame.
+		// (Bottom right if mirroring is turned on)
+		CGRect currentFaceRect = [ff bounds];
+        
+		// flip preview width and height
+		CGFloat temp = currentFaceRect.size.width;
+		currentFaceRect.size.width = currentFaceRect.size.height;
+		currentFaceRect.size.height = temp;
+		temp = currentFaceRect.origin.x;
+		currentFaceRect.origin.x = currentFaceRect.origin.y;
+		currentFaceRect.origin.y = temp;
+		
+        // scale coordinates so they fit in the preview box, which may be scaled
+		CGFloat widthScaleBy = previewBox.size.width / clap.size.height;
+		CGFloat heightScaleBy = previewBox.size.height / clap.size.width;
+		
+        currentFaceRect.size.width *= widthScaleBy;
+		currentFaceRect.size.height *= heightScaleBy;
+		currentFaceRect.origin.x *= widthScaleBy;
+		currentFaceRect.origin.y *= heightScaleBy;
+        
+        //currentFaceRect.size.width *= 1.3;
+		//currentFaceRect.size.height *= 1.3;
+		//currentFaceRect.origin.x -= currentFaceRect.size.width/5;
+		//currentFaceRect.origin.y -= currentFaceRect.size.height/6;
+        
+		//if ( isMirrored )
+		//	currentFaceRect = CGRectOffset(currentFaceRect, previewBox.origin.x + previewBox.size.width - currentFaceRect.size.width - (currentFaceRect.origin.x * 2), previewBox.origin.y);
+        //else
+			currentFaceRect = CGRectOffset(currentFaceRect, previewBox.origin.x, previewBox.origin.y);
+			
+        [imageView setFrame:currentFaceRect];
+        switch (orientation) {
+			case UIDeviceOrientationPortrait:
+				[imageView setTransform:CGAffineTransformMakeRotation([self degreesToRadians:0])];
+				break;
+			case UIDeviceOrientationPortraitUpsideDown:
+				[imageView setTransform:CGAffineTransformMakeRotation([self degreesToRadians:180])];
+				break;
+			case UIDeviceOrientationLandscapeLeft:
+				[imageView setTransform:CGAffineTransformMakeRotation([self degreesToRadians:90])];
+				break;
+			case UIDeviceOrientationLandscapeRight:
+				[imageView setTransform:CGAffineTransformMakeRotation([self degreesToRadians:-90])];
+				break;
+			case UIDeviceOrientationFaceUp:
+			case UIDeviceOrientationFaceDown:
+			default:
+				break; // leave the layer in its last known orientation
+		}		
+	}
+	
+	[CATransaction commit];
+}
+
+
 
 #pragma mark - View lifecycle
 
@@ -125,68 +253,32 @@
 
 - (void)viewDidAppear:(BOOL)animated
 {
-    // [imageView setImage:selectedFace];
     [imageView setImage:selectedFace];
-    
-    for ( CIFaceFeature *ff in features ) {
-        CGRect face = [ff bounds];
         
-        //faceRect.size.width *= 1.092188;
-        //faceRect.size.height *= 1.092188;
-        //faceRect.origin.x *= 1.092188;
-        //faceRect.origin.y *= 1.092188;
-        
-       // face.size.width *= 1.5;
-       // face.size.height *= 1.5;
-       // face.origin.x -= face.size.width/5;
-      //  face.origin.y -= face.size.height/6;
-      
-        [imageView setTransform:CGAffineTransformMakeTranslation(face.origin.y,face.origin.x)];
-        break;
-    }
-
-    
-    /*
-     NSNumber *orientation = [imageOptions objectForKey:CIDetectorImageOrientation];
-     1      Top, left
-     2      Top, right
-     3      Bottom, right
-     4      Bottom, left
-     5      Left, top
-     6      Right, top
-     7      Right, bottom
-     8      Left, bottom*/
-    
-    
-    CGFloat rotationDegrees = 0.;
-    switch ([[UIDevice currentDevice] orientation]) {
-        case UIDeviceOrientationPortrait:            
-            NSLog(@"UIDeviceOrientationPortrait");
-            rotationDegrees = 90.;
-            break;
-        case UIDeviceOrientationPortraitUpsideDown:
-            NSLog(@"UIDeviceOrientationPortraitUpsideDown");
-            break;
-        case UIDeviceOrientationLandscapeLeft:
-            NSLog(@"UIDeviceOrientationLandscapeLeft");
-            rotationDegrees = 0.;
-            break;
-        case UIDeviceOrientationLandscapeRight:
-            NSLog(@"UIDeviceOrientationLandscapeRight");
-            rotationDegrees = 180.;
-            break;
-        case UIDeviceOrientationFaceUp:
-            NSLog(@"UIDeviceOrientationFaceUp");    //dafuq?                           
-            break;
-        case UIDeviceOrientationFaceDown:
-            NSLog(@"UIDeviceOrientationFaceDown"); //dafuq?
-            break;
-        default:
-            break; // leave the layer in its last known orientation
-    }
+    [self drawMemes:frameRect orientation:[[UIDevice currentDevice] orientation]];
     
     // Convert, rotate and apply image to do UIImageView
-    [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:rotationDegrees]];
+    switch ([[UIDevice currentDevice] orientation]) {
+        case UIDeviceOrientationPortrait:
+            [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:90]];   
+            break;
+        case UIDeviceOrientationPortraitUpsideDown:
+            [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:90]];   
+            break;
+        case UIDeviceOrientationLandscapeLeft:
+            [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:90]];   
+            break;
+        case UIDeviceOrientationLandscapeRight:
+            [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:180]];   
+            break;
+        case UIDeviceOrientationFaceUp:
+        case UIDeviceOrientationFaceDown:
+        default:
+            break; // leave the layer in its last known orientation
+    }		
+
+    
+  //  [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:90]];        
 }
 
 

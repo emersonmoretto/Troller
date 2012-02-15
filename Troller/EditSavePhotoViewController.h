@@ -19,9 +19,10 @@
     CGImageRef imageRef;
     UIImage *selectedFace;
     NSArray *features;
-    CGRect faceRect;
+    CGRect frameRect;
     NSDictionary *imageOptions;
     CFDictionaryRef attachments;
+    BOOL isMirrored;
     
     __weak IBOutlet UIImageView *backgroundView;
     __weak IBOutlet UIView *view;
@@ -35,8 +36,9 @@
 - (IBAction)handlePinch:(UIPinchGestureRecognizer *)recognizer;
 - (IBAction)handleRotate:(UIRotationGestureRecognizer *)recognizer;
 
+@property(nonatomic) BOOL isMirrored;
 @property(nonatomic) CFDictionaryRef attachments;
-@property(nonatomic) CGRect faceRect;
+@property(nonatomic) CGRect frameRect;
 @property(nonatomic) CGImageRef imageRef;
 @property(nonatomic,copy) NSDictionary *imageOptions;
 @property(nonatomic,copy) UIImage * selectedFace;

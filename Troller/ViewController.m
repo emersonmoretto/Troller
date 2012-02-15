@@ -310,11 +310,14 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 		[stillImageOutput setOutputSettings:[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:kCMPixelFormat_32BGRA] forKey:(id)kCVPixelBufferPixelFormatTypeKey]];
 	
 	[stillImageOutput captureStillImageAsynchronouslyFromConnection:stillImageConnection
-                                                  completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) {
-                                                    
-                  
-      
-      
+                                           completionHandler:^(CMSampleBufferRef imageDataSampleBuffer, NSError *error) 
+    {
+        
+      CMFormatDescriptionRef fdesc = CMSampleBufferGetFormatDescription(imageDataSampleBuffer);
+      CGRect clap = CMVideoFormatDescriptionGetCleanAperture(fdesc, false /*originIsTopLeft == false*/);
+      editor.frameRect = clap;
+                                                      editor.isMirrored = isUsingFrontFacingCamera;
+                                                      
       // Got an image.
       CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(imageDataSampleBuffer);
       CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, imageDataSampleBuffer, kCMAttachmentMode_ShouldPropagate);
@@ -590,13 +593,13 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 		CGFloat widthScaleBy = previewBox.size.width / clap.size.height;
 		CGFloat heightScaleBy = previewBox.size.height / clap.size.width;
 		
-        NSLog(@"aquu %f e %f", widthScaleBy, widthScaleBy);
-       faceRect.size.width *= widthScaleBy;
+       // NSLog(@"aquu %f e %f", widthScaleBy, widthScaleBy);
+        faceRect.size.width *= widthScaleBy;
 		faceRect.size.height *= heightScaleBy;
 		faceRect.origin.x *= widthScaleBy;
 		faceRect.origin.y *= heightScaleBy;
       
-       faceRect.size.width *= 1.6;
+        faceRect.size.width *= 1.6;
 		faceRect.size.height *= 1.6;
 		faceRect.origin.x -= faceRect.size.width/5;
 		faceRect.origin.y -= faceRect.size.height/6;
@@ -722,7 +725,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
     // that represents image data valid for display.
 	CMFormatDescriptionRef fdesc = CMSampleBufferGetFormatDescription(sampleBuffer);
 	CGRect clap = CMVideoFormatDescriptionGetCleanAperture(fdesc, false /*originIsTopLeft == false*/);
-    
+
     dispatch_async(dispatch_get_main_queue(), ^(void) {
 		[self drawMemes:features forVideoBox:clap orientation:curDeviceOrientation];
 	});       
