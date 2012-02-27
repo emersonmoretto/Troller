@@ -13,51 +13,90 @@
                         <rect key="frame" x="0.0" y="20" width="768" height="1004"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="8jc-M8-f23">
-                                <rect key="frame" x="0.0" y="960" width="768" height="44"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
-                                <items>
-                                    <barButtonItem id="NV4-zq-JjQ">
-                                        <segmentedControl key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="bar" selectedSegmentIndex="0" id="sDf-wJ-Da2">
-                                            <rect key="frame" x="7" y="8" width="219" height="30"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                            <segments>
-                                                <segment title="Rear Camera"/>
-                                                <segment title="Front Camera"/>
-                                            </segments>
-                                            <connections>
-                                                <action selector="switchCameras:" destination="2" eventType="valueChanged" id="UkL-AV-xDF"/>
-                                            </connections>
-                                        </segmentedControl>
-                                        <color key="tintColor" red="0.0" green="0.027860167689241138" blue="0.47826086956521741" alpha="0.0" colorSpace="calibratedRGB"/>
-                                    </barButtonItem>
-                                    <barButtonItem width="142" style="plain" systemItem="fixedSpace" id="VgH-fF-3q2"/>
-                                    <barButtonItem systemItem="camera" id="ogN-oj-0T5">
-                                        <color key="tintColor" red="0.0" green="0.064482535089032136" blue="0.48369565217391308" alpha="0.0" colorSpace="calibratedRGB"/>
-                                        <connections>
-                                            <action selector="takePicture:" destination="2" id="EaK-mv-UfV"/>
-                                            <segue destination="3Mx-Ue-fgj" kind="push" identifier="takePictureSegue" id="23n-Pi-RN9"/>
-                                        </connections>
-                                    </barButtonItem>
-                                </items>
-                            </toolbar>
                             <view contentMode="scaleToFill" id="2X2-WA-tEY">
-                                <rect key="frame" x="25" y="0.0" width="718" height="775"/>
+                                <rect key="frame" x="159" y="79" width="609" height="829"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceHorizontal="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="S4Y-SH-IZP" customClass="MemeScrollView">
-                                <rect key="frame" x="0.0" y="775" width="768" height="185"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="18H-1x-5fR">
+                                <rect key="frame" x="632" y="916" width="77" height="77"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" size="button"/>
+                                <state key="normal" image="bt_photo.png">
+                                    <color key="titleColor" red="0.19607843137254902" green="0.30980392156862746" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <segue destination="3Mx-Ue-fgj" kind="push" identifier="takePictureSegue" id="8ra-0o-wIz"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="a2A-XK-cRb">
+                                <rect key="frame" x="500" y="916" width="77" height="77"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" size="button"/>
+                                <state key="normal" title="Camera" image="bt_switch.png">
+                                    <color key="titleColor" red="0.19607843137254902" green="0.30980392156862746" blue="0.52156862745098043" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="switchCameras:" destination="2" eventType="touchUpInside" id="CYd-Aq-NLr"/>
+                                </connections>
+                            </button>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" id="S4Y-SH-IZP" customClass="MemeScrollView">
+                                <rect key="frame" x="0.0" y="-44" width="160" height="1048"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             </scrollView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="t.png" id="2Qx-lb-zPu">
+                                <rect key="frame" x="680" y="1" width="70" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="r.png" id="8qM-K0-hDp">
+                                <rect key="frame" x="610" y="1" width="70" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="o.png" id="5LG-S9-sKl">
+                                <rect key="frame" x="538" y="1" width="70" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="l.png" id="8z1-t7-Z9r">
+                                <rect key="frame" x="468" y="1" width="70" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="l.png" id="rRh-n7-XC5">
+                                <rect key="frame" x="398" y="1" width="70" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="e.png" id="Zw3-go-03p">
+                                <rect key="frame" x="328" y="1" width="70" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" image="r.png" id="Ods-7U-dD2">
+                                <rect key="frame" x="258" y="1" width="70" height="70"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="HHe-d4-nhb"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" barStyle="blackTranslucent" prompted="NO"/>
                     <connections>
+                        <outlet property="btPhoto" destination="18H-1x-5fR" id="YDR-4i-tSv"/>
+                        <outlet property="btSwitch" destination="a2A-XK-cRb" id="f2E-6U-FwR"/>
+                        <outlet property="e" destination="Zw3-go-03p" id="Yrd-74-v2q"/>
+                        <outlet property="l" destination="8z1-t7-Z9r" id="2WS-iS-Efs"/>
+                        <outlet property="ll" destination="rRh-n7-XC5" id="xTd-7i-vfO"/>
                         <outlet property="memeScrollView" destination="S4Y-SH-IZP" id="JD6-lP-xva"/>
-                        <outlet property="previewView" destination="2X2-WA-tEY" id="dFF-KO-Lii"/>
+                        <outlet property="o" destination="5LG-S9-sKl" id="hDM-g9-eVB"/>
+                        <outlet property="previewView" destination="2X2-WA-tEY" id="hxj-nD-OPd"/>
+                        <outlet property="r" destination="8qM-K0-hDp" id="wBL-oC-azp"/>
+                        <outlet property="rr" destination="Ods-7U-dD2" id="hyB-lE-Idw"/>
+                        <outlet property="t" destination="2Qx-lb-zPu" id="fjp-FI-rA3"/>
                     </connections>
                 </viewController>
             </objects>
@@ -67,11 +106,11 @@
             <objects>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9k9-Pe-Eu7" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController id="3Mx-Ue-fgj" customClass="EditSavePhotoViewController" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="5Ue-d8-bFR">
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" id="5Ue-d8-bFR">
                         <rect key="frame" x="0.0" y="64" width="768" height="960"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" id="F11-Rd-c7t">
+                            <imageView autoresizesSubviews="NO" userInteractionEnabled="NO" contentMode="scaleToFill" id="F11-Rd-c7t">
                                 <rect key="frame" x="0.0" y="0.0" width="768" height="960"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
@@ -105,18 +144,18 @@
                         <outlet property="delegate" destination="3Mx-Ue-fgj" id="kwy-Qf-Y5f"/>
                     </connections>
                 </pinchGestureRecognizer>
-                <panGestureRecognizer minimumNumberOfTouches="1" id="bfG-Ie-EHM">
-                    <connections>
-                        <action selector="handlePan:" destination="3Mx-Ue-fgj" id="HMG-bJ-hS1"/>
-                        <outlet property="delegate" destination="3Mx-Ue-fgj" id="cAa-At-j5o"/>
-                    </connections>
-                </panGestureRecognizer>
                 <rotationGestureRecognizer id="blT-x7-IZz">
                     <connections>
                         <action selector="handleRotate:" destination="3Mx-Ue-fgj" id="sIc-Ii-ZrF"/>
                         <outlet property="delegate" destination="3Mx-Ue-fgj" id="gLr-Lx-slf"/>
                     </connections>
                 </rotationGestureRecognizer>
+                <panGestureRecognizer minimumNumberOfTouches="1" id="bfG-Ie-EHM">
+                    <connections>
+                        <action selector="handlePan:" destination="3Mx-Ue-fgj" id="HMG-bJ-hS1"/>
+                        <outlet property="delegate" destination="3Mx-Ue-fgj" id="cAa-At-j5o"/>
+                    </connections>
+                </panGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="2768" y="-94"/>
         </scene>
@@ -139,6 +178,15 @@
             <point key="canvasLocation" x="444" y="-187"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="bt_photo.png" width="200" height="200"/>
+        <image name="bt_switch.png" width="200" height="200"/>
+        <image name="e.png" width="70" height="70"/>
+        <image name="l.png" width="70" height="70"/>
+        <image name="o.png" width="70" height="70"/>
+        <image name="r.png" width="70" height="70"/>
+        <image name="t.png" width="70" height="70"/>
+    </resources>
     <classes>
         <class className="EditSavePhotoViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/EditSavePhotoViewController.h"/>
@@ -161,9 +209,18 @@
                 <relationship kind="action" name="switchCameras:"/>
                 <relationship kind="outlet" name="activityIndicator" candidateClass="UIActivityIndicatorView"/>
                 <relationship kind="outlet" name="botao" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="btPhoto" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="btSwitch" candidateClass="UIButton"/>
+                <relationship kind="outlet" name="e" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="editSavePhotoViewController" candidateClass="EditSavePhotoViewController"/>
+                <relationship kind="outlet" name="l" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="ll" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="memeScrollView" candidateClass="MemeScrollView"/>
+                <relationship kind="outlet" name="o" candidateClass="UIImageView"/>
                 <relationship kind="outlet" name="previewView" candidateClass="UIView"/>
+                <relationship kind="outlet" name="r" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="rr" candidateClass="UIImageView"/>
+                <relationship kind="outlet" name="t" candidateClass="UIImageView"/>
             </relationships>
         </class>
     </classes>

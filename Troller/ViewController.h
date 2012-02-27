@@ -21,7 +21,17 @@
     AVCaptureStillImageOutput *stillImageOutput;
     dispatch_queue_t videoDataOutputQueue;
     BOOL isUsingFrontFacingCamera;
+    __weak IBOutlet UIImageView *t;
+    __weak IBOutlet UIImageView *r;
+    __weak IBOutlet UIImageView *o;
+    __weak IBOutlet UIImageView *l;
+    __weak IBOutlet UIImageView *ll;
+    __weak IBOutlet UIImageView *e;
+    __weak IBOutlet UIImageView *rr;
   
+  
+    __weak IBOutlet UIButton *btPhoto;
+    __weak IBOutlet UIButton *btSwitch;
     IBOutlet UIActivityIndicatorView *activityIndicator;
     //IBOutlet UIView *glassView;
     IBOutlet UIButton *botao;    

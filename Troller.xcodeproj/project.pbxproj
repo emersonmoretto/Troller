@@ -45,6 +45,13 @@
 		77AAC0E214E5B767001728DF /* seriously.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0DE14E5B767001728DF /* seriously.png */; };
 		77AAC0E414E5BFC2001728DF /* nerd.png in Resources */ = {isa = PBXBuildFile; fileRef = 77AAC0E314E5BFC1001728DF /* nerd.png */; };
 		E71FBB7214E5F58E00B3721D /* EditSavePhotoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E71FBB7014E5F58E00B3721D /* EditSavePhotoViewController.m */; };
+		E734DC2914EC951B00F07CEF /* bt_photo.png in Resources */ = {isa = PBXBuildFile; fileRef = E734DC2714EC951B00F07CEF /* bt_photo.png */; };
+		E734DC2A14EC951B00F07CEF /* bt_switch.png in Resources */ = {isa = PBXBuildFile; fileRef = E734DC2814EC951B00F07CEF /* bt_switch.png */; };
+		E734DC2D14EC9BE300F07CEF /* t.png in Resources */ = {isa = PBXBuildFile; fileRef = E734DC2C14EC9BE300F07CEF /* t.png */; };
+		E734DC3214EC9C6F00F07CEF /* e.png in Resources */ = {isa = PBXBuildFile; fileRef = E734DC2E14EC9C6F00F07CEF /* e.png */; };
+		E734DC3314EC9C6F00F07CEF /* l.png in Resources */ = {isa = PBXBuildFile; fileRef = E734DC2F14EC9C6F00F07CEF /* l.png */; };
+		E734DC3414EC9C6F00F07CEF /* o.png in Resources */ = {isa = PBXBuildFile; fileRef = E734DC3014EC9C6F00F07CEF /* o.png */; };
+		E734DC3514EC9C6F00F07CEF /* r.png in Resources */ = {isa = PBXBuildFile; fileRef = E734DC3114EC9C6F00F07CEF /* r.png */; };
 		E7A5DE5014E4A60100F0E47D /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A5DE4F14E4A60100F0E47D /* AssetsLibrary.framework */; };
 		E7A5DE5314E4A61A00F0E47D /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E7A5DE5214E4A61A00F0E47D /* ImageIO.framework */; };
 		E7E1F47714E1F6F700F0FB3D /* notbad.png in Resources */ = {isa = PBXBuildFile; fileRef = E7E1F47614E1F6F700F0FB3D /* notbad.png */; };
@@ -99,6 +106,13 @@
 		77AAC0E314E5BFC1001728DF /* nerd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = nerd.png; path = Art/nerd.png; sourceTree = "<group>"; };
 		E71FBB6F14E5F58E00B3721D /* EditSavePhotoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditSavePhotoViewController.h; sourceTree = "<group>"; };
 		E71FBB7014E5F58E00B3721D /* EditSavePhotoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EditSavePhotoViewController.m; sourceTree = "<group>"; };
+		E734DC2714EC951B00F07CEF /* bt_photo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bt_photo.png; path = Art/bt_photo.png; sourceTree = "<group>"; };
+		E734DC2814EC951B00F07CEF /* bt_switch.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = bt_switch.png; path = Art/bt_switch.png; sourceTree = "<group>"; };
+		E734DC2C14EC9BE300F07CEF /* t.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = t.png; path = Art/t.png; sourceTree = "<group>"; };
+		E734DC2E14EC9C6F00F07CEF /* e.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = e.png; path = Art/e.png; sourceTree = "<group>"; };
+		E734DC2F14EC9C6F00F07CEF /* l.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = l.png; path = Art/l.png; sourceTree = "<group>"; };
+		E734DC3014EC9C6F00F07CEF /* o.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = o.png; path = Art/o.png; sourceTree = "<group>"; };
+		E734DC3114EC9C6F00F07CEF /* r.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = r.png; path = Art/r.png; sourceTree = "<group>"; };
 		E7A5DE4F14E4A60100F0E47D /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		E7A5DE5214E4A61A00F0E47D /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		E7E1F47614E1F6F700F0FB3D /* notbad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = notbad.png; sourceTree = "<group>"; };
@@ -205,6 +219,13 @@
 		7731FF6E14E1C6C70034F378 /* Art */ = {
 			isa = PBXGroup;
 			children = (
+				E734DC2E14EC9C6F00F07CEF /* e.png */,
+				E734DC2F14EC9C6F00F07CEF /* l.png */,
+				E734DC3014EC9C6F00F07CEF /* o.png */,
+				E734DC3114EC9C6F00F07CEF /* r.png */,
+				E734DC2C14EC9BE300F07CEF /* t.png */,
+				E734DC2714EC951B00F07CEF /* bt_photo.png */,
+				E734DC2814EC951B00F07CEF /* bt_switch.png */,
 				77AAC0E314E5BFC1001728DF /* nerd.png */,
 				77AAC0DB14E5B767001728DF /* fuckyeah.png */,
 				77AAC0DC14E5B767001728DF /* neildegrasse.png */,
@@ -306,6 +327,13 @@
 				77AAC0E114E5B767001728DF /* okay.png in Resources */,
 				77AAC0E214E5B767001728DF /* seriously.png in Resources */,
 				77AAC0E414E5BFC2001728DF /* nerd.png in Resources */,
+				E734DC2914EC951B00F07CEF /* bt_photo.png in Resources */,
+				E734DC2A14EC951B00F07CEF /* bt_switch.png in Resources */,
+				E734DC2D14EC9BE300F07CEF /* t.png in Resources */,
+				E734DC3214EC9C6F00F07CEF /* e.png in Resources */,
+				E734DC3314EC9C6F00F07CEF /* l.png in Resources */,
+				E734DC3414EC9C6F00F07CEF /* o.png in Resources */,
+				E734DC3514EC9C6F00F07CEF /* r.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

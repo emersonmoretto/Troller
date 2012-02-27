@@ -188,6 +188,7 @@
 			currentFaceRect = CGRectOffset(currentFaceRect, previewBox.origin.x, previewBox.origin.y);
 			
         [imageView setFrame:currentFaceRect];
+        
         switch (orientation) {
 			case UIDeviceOrientationPortrait:
 				[imageView setTransform:CGAffineTransformMakeRotation([self degreesToRadians:0])];
@@ -295,7 +296,7 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
-	return YES;
+	return NO;
 }
 
 @end

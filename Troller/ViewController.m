@@ -805,6 +805,17 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
     activityIndicator = nil;
     //glassView = nil;
     botao = nil;
+    btSwitch = nil;
+    btPhoto = nil;
+    t = nil;
+    o = nil;
+    r = nil;
+    r = nil;
+    l = nil;
+    ll = nil;
+    e = nil;
+    rr = nil;
+    r = nil;
     [super viewDidUnload];
     // Release any retained subviews of the main view.
     // e.g. self.myOutlet = nil;
@@ -900,6 +911,16 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
     for ( UIView *view in [memeScrollView subviews]) {
         [view setTransform:CGAffineTransformMakeRotation(transform)];
     }
+    [btSwitch setTransform:CGAffineTransformMakeRotation(transform)];
+    [btPhoto setTransform:CGAffineTransformMakeRotation(transform)];
+    [t setTransform:CGAffineTransformMakeRotation(transform)];
+    [r setTransform:CGAffineTransformMakeRotation(transform)];
+    [o setTransform:CGAffineTransformMakeRotation(transform)];
+    [l setTransform:CGAffineTransformMakeRotation(transform)];    
+    [ll setTransform:CGAffineTransformMakeRotation(transform)];
+    [e setTransform:CGAffineTransformMakeRotation(transform)];
+    [rr setTransform:CGAffineTransformMakeRotation(transform)];    
+    
     [UIView commitAnimations];
 }
 
