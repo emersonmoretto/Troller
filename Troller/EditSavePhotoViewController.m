@@ -176,18 +176,53 @@
 		currentFaceRect.size.height *= heightScaleBy;
 		currentFaceRect.origin.x *= widthScaleBy;
 		currentFaceRect.origin.y *= heightScaleBy;
+        CGFloat faceWidth = ff.bounds.size.width;
+
         
-        //currentFaceRect.size.width *= 1.3;
-		//currentFaceRect.size.height *= 1.3;
-		//currentFaceRect.origin.x -= currentFaceRect.size.width/5;
-		//currentFaceRect.origin.y -= currentFaceRect.size.height/6;
+        currentFaceRect.size.width *= 1.3;
+		currentFaceRect.size.height *= 1.3;
+		currentFaceRect.origin.x -= currentFaceRect.size.width/5;
+		currentFaceRect.origin.y -= currentFaceRect.size.height/5;
         
 		//if ( isMirrored )
 		//	currentFaceRect = CGRectOffset(currentFaceRect, previewBox.origin.x + previewBox.size.width - currentFaceRect.size.width - (currentFaceRect.origin.x * 2), previewBox.origin.y);
         //else
 			currentFaceRect = CGRectOffset(currentFaceRect, previewBox.origin.x, previewBox.origin.y);
 			
+        
+        
+        UIView* leftEyeView = [[UIView alloc] 
+                               initWithFrame:CGRectMake(ff.leftEyePosition.x-faceWidth*0.15, ff.leftEyePosition.y-faceWidth*0.15,faceWidth*0.3, faceWidth*0.3)];
+        
+        // change the background color of the eye view
+        [leftEyeView setBackgroundColor:[[UIColor blueColor] colorWithAlphaComponent:0.3]];
+        // set the position of the leftEyeView based on the face
+
+        [leftEyeView setCenter:CGPointMake(ff.leftEyePosition.y,ff.leftEyePosition.x)];
+        // round the corners
+        leftEyeView.layer.cornerRadius = faceWidth*0.15;
+        
+        // add the view to the window        
+        [backgroundView addSubview:leftEyeView];       
+        
+        
+        
+        // create a UIView with a size based on the width of the face
+        UIView* leftEye = [[UIView alloc] initWithFrame:CGRectMake(ff.rightEyePosition.x-faceWidth*0.15, ff.rightEyePosition.y-faceWidth*0.15, faceWidth*0.3, faceWidth*0.3)];
+        // change the background color of the eye view
+        [leftEye setBackgroundColor:[[UIColor blueColor] colorWithAlphaComponent:0.3]];
+        // set the position of the rightEyeView based on the face
+        [leftEye setCenter:CGPointMake(ff.rightEyePosition.y,ff.rightEyePosition.x)];
+        // round the corners
+        leftEye.layer.cornerRadius = faceWidth*0.15;
+        // add the new view to the window
+        [backgroundView addSubview:leftEye];   
+        
+        
         [imageView setFrame:currentFaceRect];
+        [imageView setCenter:CGPointMake((ff.rightEyePosition.y+ff.leftEyePosition.y)/2,ff.rightEyePosition.x)];
+        
+        
         
         switch (orientation) {
 			case UIDeviceOrientationPortrait:
@@ -256,7 +291,7 @@
 {
     [imageView setImage:selectedFace];
         
-    [self drawMemes:frameRect orientation:[[UIDevice currentDevice] orientation]];
+       
     
     // Convert, rotate and apply image to do UIImageView
     switch ([[UIDevice currentDevice] orientation]) {
@@ -265,6 +300,10 @@
             break;
         case UIDeviceOrientationPortraitUpsideDown:
             [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:90]];   
+            
+            [self.navigationController.navigationBar      
+             setTransform:CGAffineTransformConcat(CGAffineTransformMakeRotation(-M_PI), CGAffineTransformMakeTranslation(0,[[UIScreen mainScreen] bounds].size.height - [[UIApplication sharedApplication] statusBarFrame].size.height - self.navigationController.navigationBar.frame.size.height))];
+            
             break;
         case UIDeviceOrientationLandscapeLeft:
             [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:90]];   
@@ -279,7 +318,9 @@
     }		
 
     
-  //  [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:90]];        
+    [self drawMemes:frameRect orientation:[[UIDevice currentDevice] orientation]];
+    
+   // [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:0]];        
 }
 
 

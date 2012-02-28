@@ -110,6 +110,8 @@ static const NSString *AVCaptureStillImageIsCapturingStillImageContext = @"AVCap
   	[faces addObject:[UIImage imageNamed:@"seriously.png"]];        
    	[faces addObject:[UIImage imageNamed:@"motherofgod.png"]];
     
+      
+    selectedFace = [faces objectAtIndex:(arc4random() % [faces count])];
     
 	int tagidx = 0;
 	for (UIImage *face in faces) {       
@@ -626,14 +628,13 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
 
 			[featureLayer setContents:(id)[selectedFace CGImage]];           
 			[featureLayer setName:@"FaceLayer"];
-           [previewLayer addSublayer:featureLayer];
+            [previewLayer addSublayer:featureLayer];
            
             NSLog(@"layer criada");
 			
 		}
         lastFaceRect = faceRect;
 		[featureLayer setFrame:faceRect];
-		
         
 		switch (orientation) {
 			case UIDeviceOrientationPortrait:
