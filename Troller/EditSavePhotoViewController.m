@@ -153,6 +153,8 @@
                                                         frameSize:parentFrameSize 
                                                      apertureSize:clap.size];
 	
+    previewBox.size = [backgroundView frame].size;
+    previewBox.origin = [backgroundView frame].origin;
         
 	for ( CIFaceFeature *ff in features ) {
 		// find the correct position for the square layer within the previewLayer
@@ -184,9 +186,9 @@
 		currentFaceRect.origin.x -= currentFaceRect.size.width/5;
 		currentFaceRect.origin.y -= currentFaceRect.size.height/5;
         
-		//if ( isMirrored )
-		//	currentFaceRect = CGRectOffset(currentFaceRect, previewBox.origin.x + previewBox.size.width - currentFaceRect.size.width - (currentFaceRect.origin.x * 2), previewBox.origin.y);
-        //else
+		if ( isMirrored ){
+			currentFaceRect = CGRectOffset(currentFaceRect, previewBox.origin.x + previewBox.size.width - currentFaceRect.size.width - (currentFaceRect.origin.x * 2), previewBox.origin.y);
+        }else
 			currentFaceRect = CGRectOffset(currentFaceRect, previewBox.origin.x, previewBox.origin.y);
 			
         
@@ -220,10 +222,11 @@
         
         
         [imageView setFrame:currentFaceRect];
+        
         [imageView setCenter:CGPointMake((ff.rightEyePosition.y+ff.leftEyePosition.y)/2,ff.rightEyePosition.x)];
         
         
-        
+        // Rotacionando o meme de acordo com a posicao da tela
         switch (orientation) {
 			case UIDeviceOrientationPortrait:
 				[imageView setTransform:CGAffineTransformMakeRotation([self degreesToRadians:0])];
@@ -241,8 +244,8 @@
 			case UIDeviceOrientationFaceDown:
 			default:
 				break; // leave the layer in its last known orientation
-		}		
-	}
+		}	
+    }
 	
 	[CATransaction commit];
 }
@@ -290,8 +293,7 @@
 - (void)viewDidAppear:(BOOL)animated
 {
     [imageView setImage:selectedFace];
-        
-       
+               
     
     // Convert, rotate and apply image to do UIImageView
     switch ([[UIDevice currentDevice] orientation]) {
@@ -309,18 +311,17 @@
             [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:90]];   
             break;
         case UIDeviceOrientationLandscapeRight:
-            [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:180]];   
+            [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:90]];   
             break;
         case UIDeviceOrientationFaceUp:
         case UIDeviceOrientationFaceDown:
         default:
             break; // leave the layer in its last known orientation
     }		
-
+        
     
-    [self drawMemes:frameRect orientation:[[UIDevice currentDevice] orientation]];
-    
-   // [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:0]];        
+    [self drawMemes:frameRect  orientation:[[UIDevice currentDevice] orientation]];    
+//  [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] ima]];        
 }
 
 

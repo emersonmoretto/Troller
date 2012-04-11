@@ -316,9 +316,11 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
     {
         
       CMFormatDescriptionRef fdesc = CMSampleBufferGetFormatDescription(imageDataSampleBuffer);
+        
       CGRect clap = CMVideoFormatDescriptionGetCleanAperture(fdesc, false /*originIsTopLeft == false*/);
+
       editor.frameRect = clap;
-                                                      editor.isMirrored = isUsingFrontFacingCamera;
+      editor.isMirrored = isUsingFrontFacingCamera;
                                                       
       // Got an image.
       CVPixelBufferRef pixelBuffer = CMSampleBufferGetImageBuffer(imageDataSampleBuffer);
@@ -356,11 +358,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
           
           /*OSStatus err = CreateCGImageFromCVPixelBuffer(CMSampleBufferGetImageBuffer(imageDataSampleBuffer), &srcImage);
            
-           //check(!err);         
-           
-           
-           
-          
+           //check(!err);          
            Create a CGImageRef from the CVImageBufferRef
            */
           //CVImageBufferRef imageBuffer = CMSampleBufferGetImageBuffer(sampleBuffer); 
@@ -386,10 +384,11 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
           editor.imageRef = newImage;          
           CGContextRelease (newContext);
           
+          editor.isMirrored = isUsingFrontFacingCamera;
           editor.features = features;
           editor.selectedFace = selectedFace;
           editor.imageOptions = imageOptions;
- 
+          //editor.frameRect = clap;
           
           // aplicando a face de acordo com as features
           for ( CIFaceFeature *ff in features ) {
@@ -404,7 +403,7 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
               faceRect.size.height *= 1.5;
               faceRect.origin.x -= faceRect.size.width/5;
               faceRect.origin.y -= faceRect.size.height/6;
-              
+              /*
               
               UIImage * newFace;
               switch (curDeviceOrientation) {
@@ -443,13 +442,12 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
                   default:
                       break; // leave the layer in its last known orientation
               }
+              */
               
               // Aplicando o meme sobre a foto
               //CGContextDrawImage(newContext, faceRect, [newFace CGImage]);
-          }
+          }        
           
-          
-
           CFDictionaryRef attachments = CMCopyDictionaryOfAttachments(kCFAllocatorDefault, 
                                                                       imageDataSampleBuffer, 
                                                                       kCMAttachmentMode_ShouldPropagate);
@@ -464,13 +462,8 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
               CFRelease(attachments);
           
       });
-      
-      
-      
-
-                                                      
-                      }
-	 ];
+    }
+	];
 }
 
 // use front/back camera
@@ -725,81 +718,13 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
     // the clean aperture is a rectangle that defines the portion of the encoded pixel dimensions
     // that represents image data valid for display.
 	CMFormatDescriptionRef fdesc = CMSampleBufferGetFormatDescription(sampleBuffer);
-	CGRect clap = CMVideoFormatDescriptionGetCleanAperture(fdesc, false /*originIsTopLeft == false*/);
+	clap = CMVideoFormatDescriptionGetCleanAperture(fdesc, false /*originIsTopLeft == false*/);
 
     dispatch_async(dispatch_get_main_queue(), ^(void) {
 		[self drawMemes:features forVideoBox:clap orientation:curDeviceOrientation];
 	});       
 }
 
-
-- (void)moveModerFocker:(CIFaceFeature*)ff
-{
-    
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.05];
-    //     [botao setTransform:tr];
-    [botao setFrame:CGRectMake(previewLayer.bounds.size.width - [ff leftEyePosition].y, [ff leftEyePosition].x, botao.frame.size.height, botao.frame.size.width)];
-    [UIView commitAnimations];
-    
-    // get the width of the face
-    //CGFloat faceWidth = ff.bounds.size.width;
-
-    		//768x772
-    /*
-    
-    for (UIView *view in glassView.subviews) {
-        [view removeFromSuperview];
-    }
-    
-    if(ff.hasLeftEyePosition)        
-    {
-        // create a UIView with a size based on the width of the face
-        UIView* leftEyeView = [[UIView alloc] initWithFrame:CGRectMake(ff.leftEyePosition.x-faceWidth*0.15, ff.leftEyePosition.y-faceWidth*0.15, faceWidth*0.3, faceWidth*0.3)];
-        // change the background color of the eye view
-        [leftEyeView setBackgroundColor:[[UIColor blueColor] colorWithAlphaComponent:0.3]];
-        // set the position of the leftEyeView based on the face
-        [leftEyeView setCenter:ff.leftEyePosition];
-        // round the corners
-        leftEyeView.layer.cornerRadius = faceWidth*0.15;
-        // add the view to the window        
-        [glassView addSubview:leftEyeView];
-    }
-    
-    if(ff.hasRightEyePosition)
-    {
-        // create a UIView with a size based on the width of the face
-        UIView* leftEye = [[UIView alloc] initWithFrame:CGRectMake(ff.rightEyePosition.x-faceWidth*0.15, ff.rightEyePosition.y-faceWidth*0.15, faceWidth*0.3, faceWidth*0.3)];
-        // change the background color of the eye view
-        [leftEye setBackgroundColor:[[UIColor blueColor] colorWithAlphaComponent:0.3]];
-        // set the position of the rightEyeView based on the face
-        [leftEye setCenter:ff.rightEyePosition];
-        // round the corners
-        leftEye.layer.cornerRadius = faceWidth*0.15;
-               // add the new view to the window
-        [glassView addSubview:leftEye];        
-    }
-    
-    if(ff.hasMouthPosition)
-    {
-        // create a UIView with a size based on the width of the face
-        UIView* mouth = [[UIView alloc] initWithFrame:CGRectMake(ff.mouthPosition.x-faceWidth*0.2, ff.mouthPosition.y-faceWidth*0.2, faceWidth*0.4, faceWidth*0.4)];
-        // change the background color for the mouth to green
-        [mouth setBackgroundColor:[[UIColor greenColor] colorWithAlphaComponent:0.3]];
-        // set the position of the mouthView based on the face
-        [mouth setCenter:ff.mouthPosition];
-        // round the corners
-        mouth.layer.cornerRadius = faceWidth*0.2;
-        // add the new view to the window               
-        [glassView addSubview:mouth];
-    }
-    
-    [selectedFace setFrame:CGRectMake(ff.mouthPosition.x-faceWidth*0.2, ff.mouthPosition.y-faceWidth*0.2, faceWidth*2.2, faceWidth*2.2)];
-    [glassView addSubview:selectedFace];
-     */   
-   
-    
-}
 
 - (void)viewDidUnload
 {

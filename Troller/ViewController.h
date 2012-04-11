@@ -28,7 +28,8 @@
     __weak IBOutlet UIImageView *ll;
     __weak IBOutlet UIImageView *e;
     __weak IBOutlet UIImageView *rr;
-  
+    
+	
   
     __weak IBOutlet UIButton *btPhoto;
     __weak IBOutlet UIButton *btSwitch;
@@ -41,6 +42,7 @@
     CGRect lastFaceRect;
 	IBOutlet MemeScrollView *memeScrollView;
     UIDeviceOrientation oldOrientation;
+    CGRect clap;
     
     IBOutlet EditSavePhotoViewController * editSavePhotoViewController;
     
