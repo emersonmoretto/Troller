@@ -136,95 +136,31 @@
 
 - (void)drawMemes:(CGRect)clap orientation:(UIDeviceOrientation)orientation
 {
-	NSInteger featuresCount = [features count];
-	
 	[CATransaction begin];
 	[CATransaction setValue:(id)kCFBooleanTrue forKey:kCATransactionDisableActions];
 	
-  	
-	if ( featuresCount == 0) {
-		[CATransaction commit];
-		return; // early bail.
-	}
+    NSDictionary *detectorOptions = [[NSDictionary alloc] initWithObjectsAndKeys:CIDetectorAccuracyLow, CIDetectorAccuracy, nil];
+	CIDetector * faceDetector = [CIDetector detectorOfType:CIDetectorTypeFace context:nil options:detectorOptions];
+
     
-	CGSize parentFrameSize = [backgroundView frame].size;
-    
-	CGRect previewBox = [EditSavePhotoViewController videoPreviewBoxForGravity:AVLayerVideoGravityResizeAspectFill 
-                                                        frameSize:parentFrameSize 
-                                                     apertureSize:clap.size];
-	
-    previewBox.size = [backgroundView frame].size;
-    previewBox.origin = [backgroundView frame].origin;
+    CIImage * cima = [CIImage imageWithCGImage:imageRef];
+
+    NSArray * nfeatures = [faceDetector featuresInImage:cima options:imageOptions];
+
+	for ( CIFaceFeature *ff in nfeatures ) {
         
-	for ( CIFaceFeature *ff in features ) {
-		// find the correct position for the square layer within the previewLayer
-		// the feature box originates in the bottom left of the video frame.
-		// (Bottom right if mirroring is turned on)
-		CGRect currentFaceRect = [ff bounds];
+        NSLog(@"X eye %f",[ff rightEyePosition].x);
+        NSLog(@"Y eye %f",[ff rightEyePosition].y);
         
-		// flip preview width and height
-		CGFloat temp = currentFaceRect.size.width;
-		currentFaceRect.size.width = currentFaceRect.size.height;
-		currentFaceRect.size.height = temp;
-		temp = currentFaceRect.origin.x;
-		currentFaceRect.origin.x = currentFaceRect.origin.y;
-		currentFaceRect.origin.y = temp;
-		
-        // scale coordinates so they fit in the preview box, which may be scaled
-		CGFloat widthScaleBy = previewBox.size.width / clap.size.height;
-		CGFloat heightScaleBy = previewBox.size.height / clap.size.width;
-		
-        currentFaceRect.size.width *= widthScaleBy;
-		currentFaceRect.size.height *= heightScaleBy;
-		currentFaceRect.origin.x *= widthScaleBy;
-		currentFaceRect.origin.y *= heightScaleBy;
         CGFloat faceWidth = ff.bounds.size.width;
 
-        
-        currentFaceRect.size.width *= 1.3;
-		currentFaceRect.size.height *= 1.3;
-		currentFaceRect.origin.x -= currentFaceRect.size.width/5;
-		currentFaceRect.origin.y -= currentFaceRect.size.height/5;
-        
-		if ( isMirrored ){
-			currentFaceRect = CGRectOffset(currentFaceRect, previewBox.origin.x + previewBox.size.width - currentFaceRect.size.width - (currentFaceRect.origin.x * 2), previewBox.origin.y);
-        }else
-			currentFaceRect = CGRectOffset(currentFaceRect, previewBox.origin.x, previewBox.origin.y);
-			
+//        CGPoint faceCenter = CGPointMake(((ff.rightEyePosition.y+ff.mouthPosition.y)/2)*0.95,((ff.rightEyePosition.x+ff.leftEyePosition.x)/2) *0.9);
         
         
-        UIView* leftEyeView = [[UIView alloc] 
-                               initWithFrame:CGRectMake(ff.leftEyePosition.x-faceWidth*0.15, ff.leftEyePosition.y-faceWidth*0.15,faceWidth*0.3, faceWidth*0.3)];
-        
-        // change the background color of the eye view
-        [leftEyeView setBackgroundColor:[[UIColor blueColor] colorWithAlphaComponent:0.3]];
-        // set the position of the leftEyeView based on the face
-
-        [leftEyeView setCenter:CGPointMake(ff.leftEyePosition.y,ff.leftEyePosition.x)];
-        // round the corners
-        leftEyeView.layer.cornerRadius = faceWidth*0.15;
-        
-        // add the view to the window        
-        [backgroundView addSubview:leftEyeView];       
-        
-        
-        
-        // create a UIView with a size based on the width of the face
-        UIView* leftEye = [[UIView alloc] initWithFrame:CGRectMake(ff.rightEyePosition.x-faceWidth*0.15, ff.rightEyePosition.y-faceWidth*0.15, faceWidth*0.3, faceWidth*0.3)];
-        // change the background color of the eye view
-        [leftEye setBackgroundColor:[[UIColor blueColor] colorWithAlphaComponent:0.3]];
-        // set the position of the rightEyeView based on the face
-        [leftEye setCenter:CGPointMake(ff.rightEyePosition.y,ff.rightEyePosition.x)];
-        // round the corners
-        leftEye.layer.cornerRadius = faceWidth*0.15;
-        // add the new view to the window
-        [backgroundView addSubview:leftEye];   
-        
-        
-        [imageView setFrame:currentFaceRect];
-        
-        [imageView setCenter:CGPointMake((ff.rightEyePosition.y+ff.leftEyePosition.y)/2,ff.rightEyePosition.x)];
-        
+        // y = media entre a (media da distancia entre olho e boca) , com o (y do olho)
+        CGPoint faceCenter = CGPointMake( ((ff.rightEyePosition.y + (ff.rightEyePosition.y + ff.mouthPosition.y)/2)/2) *0.95,
+                                          ((ff.rightEyePosition.x+ff.leftEyePosition.x)/2) *0.9);
+                
         
         // Rotacionando o meme de acordo com a posicao da tela
         switch (orientation) {
@@ -245,8 +181,62 @@
 			default:
 				break; // leave the layer in its last known orientation
 		}	
+        
+        // TODO calcular a proporcao olhos x boca pra escalonar o frame da imageView  ok!! falta aplicar no frame so
+        // TODO para a camera frontar, tem que fazer todo o calculo do centro novamente
+        // TODO flipar o meme (antes do calculo)
+        
+        // [imageView setFrame:currentFaceRect];
+        [imageView setCenter:faceCenter];
+        
+        
+        
+        
+        ///////////// DEBUG 
+        
+        UIView* leftEyeView = [[UIView alloc] 
+                               initWithFrame:CGRectMake(ff.leftEyePosition.x-faceWidth*0.15, ff.leftEyePosition.y-faceWidth*0.15,faceWidth*0.3, faceWidth*0.3)];
+        // change the background color of the eye view
+        [leftEyeView setBackgroundColor:[[UIColor blueColor] colorWithAlphaComponent:0.3]];
+        // set the position of the leftEyeView based on the face
+
+        [leftEyeView setCenter:CGPointMake(ff.leftEyePosition.y*0.95,ff.leftEyePosition.x*0.9)];
+        // round the corners
+        leftEyeView.layer.cornerRadius = faceWidth*0.15;
+        
+        // add the view to the window        
+        [backgroundView addSubview:leftEyeView];       
+        
+        // create a UIView with a size based on the width of the face
+        UIView* leftEye = [[UIView alloc] initWithFrame:CGRectMake(ff.rightEyePosition.x-faceWidth*0.15, ff.rightEyePosition.y-faceWidth*0.15, faceWidth*0.3, faceWidth*0.3)];
+        // change the background color of the eye view
+        [leftEye setBackgroundColor:[[UIColor blueColor] colorWithAlphaComponent:0.3]];
+        // set the position of the rightEyeView based on the face
+        [leftEye setCenter:CGPointMake(ff.rightEyePosition.y*0.95,ff.rightEyePosition.x*0.9)];
+        // round the corners
+        leftEye.layer.cornerRadius = faceWidth*0.15;
+        // add the new view to the window
+        [backgroundView addSubview:leftEye];   
+        
+        // create a UIView with a size based on the width of the face
+        UIView* face = [[UIView alloc] initWithFrame:CGRectMake(ff.rightEyePosition.x-faceWidth*0.15, ff.rightEyePosition.y-faceWidth*0.15, faceWidth,faceWidth)];
+        // change the background color of the eye view
+        [face setBackgroundColor:[[UIColor redColor] colorWithAlphaComponent:0.3]];
+        // set the position of the rightEyeView based on the face
+        [face setCenter:faceCenter];
+        // round the corners
+        face.layer.cornerRadius = faceWidth*0.2;
+        // add the new view to the window
+        [backgroundView addSubview:face];
+        
+        
+        ///////////// END OF DEBUG
+        
+        
+        
+
+   
     }
-	
 	[CATransaction commit];
 }
 
@@ -261,6 +251,10 @@
 }
 
 // GESTURE HANDLES
+- (IBAction)back:(id)sender {
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
 - (IBAction)handlePan:(UIPanGestureRecognizer *)recognizer {
     
     CGPoint translation = [recognizer translationInView:self.view];
@@ -287,41 +281,22 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController.navigationBar setHidden:NO];    
+
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [imageView setImage:selectedFace];
-               
+
+    UIImage * photo = [[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:90];                
     
-    // Convert, rotate and apply image to do UIImageView
-    switch ([[UIDevice currentDevice] orientation]) {
-        case UIDeviceOrientationPortrait:
-            [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:90]];   
-            break;
-        case UIDeviceOrientationPortraitUpsideDown:
-            [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:90]];   
-            
-            [self.navigationController.navigationBar      
-             setTransform:CGAffineTransformConcat(CGAffineTransformMakeRotation(-M_PI), CGAffineTransformMakeTranslation(0,[[UIScreen mainScreen] bounds].size.height - [[UIApplication sharedApplication] statusBarFrame].size.height - self.navigationController.navigationBar.frame.size.height))];
-            
-            break;
-        case UIDeviceOrientationLandscapeLeft:
-            [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:90]];   
-            break;
-        case UIDeviceOrientationLandscapeRight:
-            [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] imageRotatedByDegrees:90]];   
-            break;
-        case UIDeviceOrientationFaceUp:
-        case UIDeviceOrientationFaceDown:
-        default:
-            break; // leave the layer in its last known orientation
-    }		
-        
+    if(isMirrored)
+        [backgroundView setImage:[UIImage imageWithCGImage:photo.CGImage scale:1.0 orientation:UIImageOrientationUpMirrored]];
+    else
+        [backgroundView setImage:[UIImage imageWithCGImage:photo.CGImage]];   
+
     
     [self drawMemes:frameRect  orientation:[[UIDevice currentDevice] orientation]];    
-//  [backgroundView setImage:[[UIImage imageWithCGImage:imageRef] ima]];        
 }
 
 

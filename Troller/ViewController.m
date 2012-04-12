@@ -399,10 +399,10 @@ static inline double radians (double degrees) {return degrees * M_PI/180;}
               //faceRect.origin.x *= 1.092188;
               //faceRect.origin.y *= 1.092188;
               
-              faceRect.size.width *= 1.5;
-              faceRect.size.height *= 1.5;
-              faceRect.origin.x -= faceRect.size.width/5;
-              faceRect.origin.y -= faceRect.size.height/6;
+              faceRect.size.width *= 1.4;
+              faceRect.size.height *= 1.4;
+              faceRect.origin.x -= faceRect.size.width/4;
+              faceRect.origin.y -= faceRect.size.height/5;
               /*
               
               UIImage * newFace;
