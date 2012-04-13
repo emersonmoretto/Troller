@@ -111,10 +111,10 @@
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <imageView autoresizesSubviews="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" id="F11-Rd-c7t">
-                                <rect key="frame" x="39" y="47" width="681" height="866"/>
+                                <rect key="frame" x="0.0" y="0.0" width="681" height="866"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView autoresizesSubviews="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" id="NdK-4S-p1B">
+                            <imageView autoresizesSubviews="NO" opaque="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" id="NdK-4S-p1B">
                                 <rect key="frame" x="0.0" y="0.0" width="250" height="200"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <gestureRecognizers/>
@@ -125,7 +125,7 @@
                                 </connections>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="B2U-se-owW">
-                                <rect key="frame" x="355" y="2" width="178" height="37"/>
+                                <rect key="frame" x="689" y="385" width="69" height="64"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                 <state key="normal" title="Back">

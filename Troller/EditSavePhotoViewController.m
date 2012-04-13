@@ -161,20 +161,21 @@
         CGPoint faceCenter = CGPointMake( ((ff.rightEyePosition.y + (ff.rightEyePosition.y + ff.mouthPosition.y)/2)/2) *0.95,
                                           ((ff.rightEyePosition.x+ff.leftEyePosition.x)/2) *0.9);
                 
+        CGRect faceBounds = CGRectMake(ff.bounds.origin.y*0.95, (ff.bounds.origin.x*0.9), faceWidth*0.95, ff.bounds.size.height*0.9);
         
-        // Rotacionando o meme de acordo com a posicao da tela
+        // Calculando o centtro da face
         switch (orientation) {
 			case UIDeviceOrientationPortrait:
-				[imageView setTransform:CGAffineTransformMakeRotation([self degreesToRadians:0])];
+		        faceCenter = CGPointMake(((ff.rightEyePosition.y + ff.leftEyePosition.y)/2)*0.95 , ff.rightEyePosition.x*0.9);                
 				break;
 			case UIDeviceOrientationPortraitUpsideDown:
-				[imageView setTransform:CGAffineTransformMakeRotation([self degreesToRadians:180])];
+		        faceCenter = CGPointMake(((ff.rightEyePosition.y + ff.leftEyePosition.y)/2)*0.95 , ff.rightEyePosition.x*0.9);                                
 				break;
 			case UIDeviceOrientationLandscapeLeft:
-				[imageView setTransform:CGAffineTransformMakeRotation([self degreesToRadians:90])];
+		        faceCenter = CGPointMake(ff.rightEyePosition.y*0.95 , ((ff.rightEyePosition.x+ff.leftEyePosition.x)/2) *0.9);                
 				break;
 			case UIDeviceOrientationLandscapeRight:
-				[imageView setTransform:CGAffineTransformMakeRotation([self degreesToRadians:-90])];
+		        faceCenter = CGPointMake(ff.rightEyePosition.y*0.95 , ((ff.rightEyePosition.x+ff.leftEyePosition.x)/2) *0.9);
 				break;
 			case UIDeviceOrientationFaceUp:
 			case UIDeviceOrientationFaceDown:
@@ -182,60 +183,77 @@
 				break; // leave the layer in its last known orientation
 		}	
         
-        // TODO calcular a proporcao olhos x boca pra escalonar o frame da imageView  ok!! falta aplicar no frame so
         // TODO para a camera frontar, tem que fazer todo o calculo do centro novamente
         // TODO flipar o meme (antes do calculo)
-        
-        // [imageView setFrame:currentFaceRect];
-        [imageView setCenter:faceCenter];
-        
-        
         
         
         ///////////// DEBUG 
         
-        UIView* leftEyeView = [[UIView alloc] 
-                               initWithFrame:CGRectMake(ff.leftEyePosition.x-faceWidth*0.15, ff.leftEyePosition.y-faceWidth*0.15,faceWidth*0.3, faceWidth*0.3)];
-        // change the background color of the eye view
-        [leftEyeView setBackgroundColor:[[UIColor blueColor] colorWithAlphaComponent:0.3]];
-        // set the position of the leftEyeView based on the face
+        if(false){
+            UIView* leftEyeView = [[UIView alloc] 
+                                   initWithFrame:CGRectMake(ff.leftEyePosition.x-faceWidth*0.15, ff.leftEyePosition.y-faceWidth*0.15,faceWidth*0.3, faceWidth*0.3)];
+            // change the background color of the eye view
+            [leftEyeView setBackgroundColor:[[UIColor blueColor] colorWithAlphaComponent:0.3]];
+            // set the position of the leftEyeView based on the face
 
-        [leftEyeView setCenter:CGPointMake(ff.leftEyePosition.y*0.95,ff.leftEyePosition.x*0.9)];
-        // round the corners
-        leftEyeView.layer.cornerRadius = faceWidth*0.15;
+            [leftEyeView setCenter:CGPointMake(ff.leftEyePosition.y*0.95,ff.leftEyePosition.x*0.9)];
+            // round the corners
+            leftEyeView.layer.cornerRadius = faceWidth*0.15;
+            
+            // add the view to the window        
+            [backgroundView addSubview:leftEyeView];       
+            
+            // create a UIView with a size based on the width of the face
+            UIView* leftEye = [[UIView alloc] initWithFrame:CGRectMake(ff.rightEyePosition.x-faceWidth*0.15, ff.rightEyePosition.y-faceWidth*0.15, faceWidth*0.3, faceWidth*0.3)];
+            // change the background color of the eye view
+            [leftEye setBackgroundColor:[[UIColor blueColor] colorWithAlphaComponent:0.3]];
+            // set the position of the rightEyeView based on the face
+            [leftEye setCenter:faceCenter];
+            //ff.rightEyePosition.y*0.95 , ((ff.rightEyePosition.x+ff.leftEyePosition.x)/2) *0.9)
+            // round the corners
+            leftEye.layer.cornerRadius = faceWidth*0.15;
+            // add the new view to the window
+            [backgroundView addSubview:leftEye];   
+            
+            // create a UIView with a size based on the width of the face
+            UIView* face = [[UIView alloc] initWithFrame:faceBounds];
+            // change the background color of the eye view
+            [face setBackgroundColor:[[UIColor redColor] colorWithAlphaComponent:0.3]];
+            // set the position of the rightEyeView based on the face
+        //        [face setCenter:faceCenter];
+            // round the corners
+            face.layer.cornerRadius = faceWidth*0.2;
+            // add the new view to the window
+            [backgroundView addSubview:face];
         
-        // add the view to the window        
-        [backgroundView addSubview:leftEyeView];       
-        
-        // create a UIView with a size based on the width of the face
-        UIView* leftEye = [[UIView alloc] initWithFrame:CGRectMake(ff.rightEyePosition.x-faceWidth*0.15, ff.rightEyePosition.y-faceWidth*0.15, faceWidth*0.3, faceWidth*0.3)];
-        // change the background color of the eye view
-        [leftEye setBackgroundColor:[[UIColor blueColor] colorWithAlphaComponent:0.3]];
-        // set the position of the rightEyeView based on the face
-        [leftEye setCenter:CGPointMake(ff.rightEyePosition.y*0.95,ff.rightEyePosition.x*0.9)];
-        // round the corners
-        leftEye.layer.cornerRadius = faceWidth*0.15;
-        // add the new view to the window
-        [backgroundView addSubview:leftEye];   
-        
-        // create a UIView with a size based on the width of the face
-        UIView* face = [[UIView alloc] initWithFrame:CGRectMake(ff.rightEyePosition.x-faceWidth*0.15, ff.rightEyePosition.y-faceWidth*0.15, faceWidth,faceWidth)];
-        // change the background color of the eye view
-        [face setBackgroundColor:[[UIColor redColor] colorWithAlphaComponent:0.3]];
-        // set the position of the rightEyeView based on the face
-        [face setCenter:faceCenter];
-        // round the corners
-        face.layer.cornerRadius = faceWidth*0.2;
-        // add the new view to the window
-        [backgroundView addSubview:face];
-        
+        }
         
         ///////////// END OF DEBUG
-        
-        
-        
 
-   
+        
+        [imageView setFrame:faceBounds];
+        [imageView setCenter:faceCenter];
+        
+        // rotate and scale
+        switch (orientation) {
+			case UIDeviceOrientationPortrait:
+				[imageView setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(1.5, 1.5),CGAffineTransformMakeRotation([self degreesToRadians:0]))];
+				break;
+			case UIDeviceOrientationPortraitUpsideDown:
+				[imageView setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(1.5, 1.5),CGAffineTransformMakeRotation([self degreesToRadians:180]))];
+				break;
+			case UIDeviceOrientationLandscapeLeft:
+				[imageView setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(1.5, 1.5),CGAffineTransformMakeRotation([self degreesToRadians:90]))];                
+				break;
+			case UIDeviceOrientationLandscapeRight:
+				[imageView setTransform:CGAffineTransformConcat(CGAffineTransformMakeScale(1.5, 1.5),CGAffineTransformMakeRotation([self degreesToRadians:-90]))];                
+				break;
+			case UIDeviceOrientationFaceUp:
+			case UIDeviceOrientationFaceDown:
+			default:
+				break; // leave the layer in its last known orientation
+		}	
+        
     }
 	[CATransaction commit];
 }
