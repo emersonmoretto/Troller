@@ -35,8 +35,9 @@
 }
 
 
+
 // utility routine used after taking a still image to write the resulting image to the camera roll
-- (BOOL)writeCGImageToCameraRoll:(CGImageRef)cgImage withMetadata:(NSDictionary *)metadata
+- (BOOL)writeCGImageToCameraRoll
 {
 	CFMutableDataRef destinationData = CFDataCreateMutable(kCFAllocatorDefault, 0);
 	CGImageDestinationRef destination = CGImageDestinationCreateWithData(destinationData, 
@@ -58,7 +59,16 @@
 		CFRelease( qualityNum );
 	}
 	
-	CGImageDestinationAddImage( destination, cgImage, optionsDict );
+    // TODO atachar os UIViews no background view    
+    // talvez adicionando todos eles como layers?
+    
+    UIGraphicsBeginImageContext(backgroundView.bounds.size);
+    [backgroundView.layer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();
+
+    
+	CGImageDestinationAddImage( destination, image.CGImage, optionsDict );
 	success = CGImageDestinationFinalize( destination );
     
 	if ( optionsDict )
@@ -68,7 +78,7 @@
 	
 	CFRetain(destinationData);
 	ALAssetsLibrary *library = [ALAssetsLibrary new];
-	[library writeImageDataToSavedPhotosAlbum:(__bridge id)destinationData metadata:metadata completionBlock:^(NSURL *assetURL, NSError *error) {
+	[library writeImageDataToSavedPhotosAlbum:(__bridge id)destinationData metadata:nil completionBlock:^(NSURL *assetURL, NSError *error) {
 		if (destinationData)
 			CFRelease(destinationData);
 	}];
@@ -84,47 +94,23 @@
 	return success;
 }
 
-// find where the video box is positioned within the preview layer based on the video size and gravity
-+ (CGRect)videoPreviewBoxForGravity:(NSString *)gravity frameSize:(CGSize)frameSize apertureSize:(CGSize)apertureSize
-{
-    CGFloat apertureRatio = apertureSize.height / apertureSize.width;
-    CGFloat viewRatio = frameSize.width / frameSize.height;
+
+
+- (IBAction)save:(id)sender {
     
-    CGSize size = CGSizeZero;
-    if ([gravity isEqualToString:AVLayerVideoGravityResizeAspectFill]) {
-        if (viewRatio > apertureRatio) {
-            size.width = frameSize.width;
-            size.height = apertureSize.width * (frameSize.width / apertureSize.height);
-        } else {
-            size.width = apertureSize.height * (frameSize.height / apertureSize.width);
-            size.height = frameSize.height;
-        }
-    } else if ([gravity isEqualToString:AVLayerVideoGravityResizeAspect]) {
-        if (viewRatio > apertureRatio) {
-            size.width = apertureSize.height * (frameSize.height / apertureSize.width);
-            size.height = frameSize.height;
-        } else {
-            size.width = frameSize.width;
-            size.height = apertureSize.width * (frameSize.width / apertureSize.height);
-        }
-    } else if ([gravity isEqualToString:AVLayerVideoGravityResize]) {
-        size.width = frameSize.width;
-        size.height = frameSize.height;
-    }
-	
-	CGRect videoBox;
-	videoBox.size = size;
-	if (size.width < frameSize.width)
-		videoBox.origin.x = (frameSize.width - size.width) / 2;
-	else
-		videoBox.origin.x = (size.width - frameSize.width) / 2;
-	
-	if ( size.height < frameSize.height )
-		videoBox.origin.y = (frameSize.height - size.height) / 2;
-	else
-		videoBox.origin.y = (size.height - frameSize.height) / 2;
+    [self writeCGImageToCameraRoll];
+    /*
+     UIGraphicsBeginImageContext(backgroundView.bounds.size);
+     [backgroundView.layer renderInContext:UIGraphicsGetCurrentContext()];
+     UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+     UIGraphicsEndImageContext();
+     
+     
+     NSData *imageData = UIImageJPEGRepresentation(image, 1.0);
+     [imageData writeToFile:@"public.jpeg" atomically:YES];
+     */
     
-	return videoBox;
+    
 }
 
 - (double)degreesToRadians:(int)degrees
@@ -148,9 +134,6 @@
     NSArray * nfeatures = [faceDetector featuresInImage:cima options:imageOptions];
 
 	for ( CIFaceFeature *ff in nfeatures ) {
-        
-        NSLog(@"X eye %f",[ff rightEyePosition].x);
-        NSLog(@"Y eye %f",[ff rightEyePosition].y);
         
         CGFloat faceWidth = ff.bounds.size.width;
 
@@ -220,7 +203,7 @@
             // change the background color of the eye view
             [face setBackgroundColor:[[UIColor redColor] colorWithAlphaComponent:0.3]];
             // set the position of the rightEyeView based on the face
-        //        [face setCenter:faceCenter];
+        //  [face setCenter:faceCenter];
             // round the corners
             face.layer.cornerRadius = faceWidth*0.2;
             // add the new view to the window

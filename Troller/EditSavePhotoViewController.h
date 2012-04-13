@@ -33,6 +33,7 @@
 }
 
 - (IBAction)back:(id)sender;
+- (IBAction)save:(id)sender;
 - (IBAction)handlePan:(UIPanGestureRecognizer *)recognizer;
 - (IBAction)handlePinch:(UIPinchGestureRecognizer *)recognizer;
 - (IBAction)handleRotate:(UIRotationGestureRecognizer *)recognizer;
